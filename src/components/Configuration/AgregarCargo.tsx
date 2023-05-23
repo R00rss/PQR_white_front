@@ -1,0 +1,501 @@
+import React, { useState, useEffect, createContext, useContext } from "react";
+
+import { parse, addSeconds, getSeconds, getTime, getHours } from "date-fns";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { delete_cargo, update_cargo } from "../../services/cargo";
+import useArea from "../../hooks/useArea";
+import { create_cargo } from "../../services/cargo";
+
+const MySwal = withReactContent(Swal);
+
+type cargo = {
+  cargo_id: string;
+  cargo_name: string;
+  area: {
+    area_name: string;
+    area_id: string;
+  };
+};
+type area = {
+  area_id: string;
+  area_name: string;
+};
+
+interface CargoProps {
+  showPopUp: boolean;
+  onClosePopUp: () => void;
+  nameButton: string;
+  getData: Function;
+  selectedCargo: cargo;
+}
+interface PopUpAddProps {
+  onClosePopUp: () => void;
+  getData: Function;
+}
+interface PopUpEditProps {
+  onClosePopUp: () => void;
+  getData: Function;
+  selectedCargo: cargo;
+}
+interface PopUpDeleteProps {
+  onClosePopUp: () => void;
+  getData: Function;
+  selectedCargo: cargo;
+}
+
+export default function AgregarCargo({
+  showPopUp,
+  onClosePopUp,
+  nameButton,
+  getData,
+  selectedCargo,
+}: CargoProps) {
+  const RenderComponent = () => {
+    if (nameButton === "btnEditar") {
+      return (
+        <PopEditarCargo
+          onClosePopUp={onClosePopUp}
+          getData={getData}
+          selectedCargo={selectedCargo}
+        />
+      );
+    } else if (nameButton === "btnAgregar") {
+      return <PopAgregarCargo onClosePopUp={onClosePopUp} getData={getData} />;
+    } else if (nameButton === "btnEliminar") {
+      return (
+        <PopDeleteCargo
+          onClosePopUp={onClosePopUp}
+          getData={getData}
+          selectedCargo={selectedCargo}
+        />
+      );
+    } else {
+      return <></>;
+    }
+  };
+
+  if (!showPopUp) return null;
+  return (
+    <div>
+      <div className="flex fixed w-full h-full duration-100 bg-black/50 z-10 top-0 left-0 bottom-0 right-0 justify-center items-center">
+        <RenderComponent />
+      </div>
+    </div>
+  );
+}
+
+function PopEditarCargo({
+  onClosePopUp,
+  getData,
+  selectedCargo,
+}: PopUpEditProps) {
+  const [cargo_info, setCargoInfo] = useState<cargo>(selectedCargo);
+  const areaHook = useArea();
+  const area_info = areaHook.areas;
+
+  const editCargo = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (event.currentTarget.checkValidity()) {
+      const res = await update_cargo(
+        cargo_info.area.area_id,
+        cargo_info.cargo_id,
+        cargo_info.cargo_name
+      );
+      if (res != undefined) {
+        console.log("Estatus del pedido: ", res.status);
+        const data_ = await res.json();
+
+        console.log("Datos actualizados: ", data_);
+
+        MySwal.fire({
+          title: "!Cargo actualizado correctamente¡",
+          //text: "No ha rellenado todos los campos",
+          icon: "success",
+          // confirmButtonText: "Aceptar",
+          showConfirmButton: false,
+          buttonsStyling: false,
+          timer: 1500,
+          customClass: {
+            confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            popup: "bg-azul text-text rounded-3xl text-white",
+          },
+        }).finally(() => {
+          onClosePopUp();
+          getData();
+        });
+      }
+    }
+  };
+
+  function handle_select(e: any) {
+    const area_founded = areaHook.getItemByName(e.target.value);
+    if (area_founded) {
+      setCargoInfo({
+        ...cargo_info,
+        area: {
+          ...cargo_info.area,
+          area_name: e.target.value,
+          area_id: area_founded.area_id,
+        },
+      });
+    }
+  }
+
+  return (
+    <>
+      <div className="flex flex-col items-center bg-blanco w-[min(550px,90%)] rounded-lg duration-200 transform ">
+        <div className="bg-azul w-full h-[35px] rounded-t-md text-blanco font-semibold text-lg flex items-center justify-center">
+          <p className="text-xl">Editar Cargo</p>
+        </div>
+
+        <div className="w-[80%]">
+          <form action="flex flex-col w-full" onSubmit={editCargo} noValidate>
+            <div className="flex flex-col w-full">
+              {/* fila 1 */}
+
+              {/* fila 2 */}
+              <div className="flex flex-row my-2 w-full">
+                <div className="flex flex-row w-[100%]">
+                  <p className="text-base font-semibold text-morado">
+                    Nombre Producto
+                  </p>
+                  {/* <span className="text-red-600">*</span> */}
+                </div>
+              </div>
+              <div className="flex flex-row w-full">
+                <div className="w-[100%]">
+                  <input
+                    onChange={(event) => {
+                      setCargoInfo({
+                        ...cargo_info,
+                        cargo_name: event.target.value,
+                      });
+                    }}
+                    value={cargo_info.cargo_name}
+                    required
+                    type="text"
+                    className="text-base px-2 mb-2 h-[30px] w-full font-medium border border-azul rounded focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                  />
+                </div>
+
+                {/* Estado */}
+              </div>
+              <div className="flex flex-row w-full">
+                <div className="flex flex-row w-[100%]">
+                  <p className="text-base text-morado font-semibold">
+                    Area del Cargo
+                  </p>
+                  {/* <span className="text-red-600">*</span> */}
+                </div>
+              </div>
+
+              <div className="flex flex-row w-full">
+                <div className="flex flex-row w-[100%]">
+                  {/* {area_info && (
+                    <SelectArea
+                      onChange={handle_select}
+                      value={cargo_info.area.area_name}
+                      areas={area_info}
+                    />
+                  )} */}
+                  <select
+                    name=""
+                    id=""
+                    className="w-full border border-azul rounded mt-2 h-[30px] px-2 text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                    onChange={handle_select}
+                    value={cargo_info.area.area_name}
+                  >
+                    {area_info.map((area) => {
+                      return (
+                        <option key={area.area_id} value={area.area_name}>
+                          {area.area_name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-center text-base font-medium text-morado my-4">
+                <button
+                  type="submit"
+                  className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
+                >
+                  Confirmar
+                </button>
+                <button
+                  type="button"
+                  className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
+                  onClick={onClosePopUp}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+
+            {/* fila 3 */}
+          </form>
+        </div>
+
+        {/* Div Contenido */}
+      </div>
+    </>
+  );
+}
+
+function SelectArea(onChange: any, value: string, areas: area[]) {
+  console.log(areas);
+  if (!areas) return <></>;
+  if (areas.length === 0) return <></>;
+  return (
+    <select
+      name=""
+      id=""
+      className="w-full border border-azul rounded "
+      onChange={onChange}
+      value={value}
+    >
+      {areas.map((area) => {
+        return (
+          <option key={area.area_id} value={area.area_name}>
+            {area.area_name}
+          </option>
+        );
+      })}
+    </select>
+  );
+}
+
+function PopAgregarCargo({ onClosePopUp, getData }: PopUpAddProps) {
+  const areaHook = useArea();
+  const area_info = areaHook.areas;
+
+  const [cargo_info, setCargoInfo] = useState({
+    cargo_name: "",
+    area: {
+      area_name: "",
+      area_id: "",
+    },
+  });
+  function handle_select(e: any) {
+    const area_founded = areaHook.getItemByName(e.target.value);
+    if (area_founded) {
+      setCargoInfo({
+        ...cargo_info,
+        area: {
+          ...cargo_info.area,
+          area_name: e.target.value,
+          area_id: area_founded.area_id,
+        },
+      });
+    }
+  }
+  async function handle_submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (event.currentTarget.checkValidity()) {
+      const res = await create_cargo(
+        cargo_info.area.area_id,
+        cargo_info.cargo_name
+      );
+      console.log(res);
+      if (res) {
+        const estado: number = res.status;
+        console.log("Estatus del Pedido: ", estado);
+
+        const data_ = await res?.json();
+        console.log("Datos :", data_);
+
+        if (res.status != 200) {
+          MySwal.fire({
+            title: "¡Error!",
+            //text: estado,
+            icon: "error",
+            confirmButtonText: "Aceptar",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+              popup: "bg-azul text-text rounded-3xl",
+            },
+          });
+        } else {
+          MySwal.fire({
+            title: "Cargo ingresado con éxito!",
+            // text: "Credenciales inválidas",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+            // confirmButtonText: "Aceptar",
+            // buttonsStyling: false,
+            customClass: {
+              confirmButton:
+                "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+              popup: "bg-azul text-text rounded-3xl text-white",
+            },
+          }).finally(() => {
+            onClosePopUp();
+            getData();
+          });
+        }
+      } else {
+        MySwal.fire({
+          title: "¡Error!",
+          text: "Undefined",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            popup: "bg-azul text-text rounded-3xl",
+          },
+        });
+      }
+    }
+  }
+
+  return (
+    <>
+      <form
+        onSubmit={handle_submit}
+        className="flex flex-col items-center bg-blanco w-[600px] rounded-lg"
+      >
+        <div className="bg-azul w-full h-[40px] rounded-t-md text-blanco font-semibold text-lg justify-center items-center flex">
+          <p className="text-xl font-semibold">Agregar Cargo</p>
+        </div>
+        {/* Div Contenido */}
+        <div className=" flex flex-col w-[70%] h-[85%]">
+          {/* fila 1 */}
+          {/* fila 2 */}
+          <div className="flex flex-row mt-2">
+            <p className="text-base font-bold text-morado">Nuevo Cargo</p>
+            {/* <span className="text-red-600">*</span> */}
+          </div>
+          {/* fila 3 */}
+          <div>
+            <input
+              value={cargo_info.cargo_name}
+              onChange={(e) =>
+                setCargoInfo({ ...cargo_info, cargo_name: e.target.value })
+              }
+              type="text"
+              className="w-full border border-azul rounded mt-2 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] px-2"
+            />
+          </div>
+          <div className="flex flex-row mt-2">
+            <p className="text-base font-bold text-morado">Elegir Area</p>
+            {/* <span className="text-red-600">*</span> */}
+          </div>
+          <div className="flex flex-row py-2">
+            <select
+              name=""
+              id=""
+              className="w-full border border-azul rounded h-[28px] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+              onChange={handle_select}
+              value={cargo_info.area.area_name}
+            >
+              {area_info.map((area) => {
+                return (
+                  <option key={area.area_id} value={area.area_name}>
+                    {area.area_name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex justify-center text-base font-medium text-morado my-4">
+            <button
+              type="submit"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
+            >
+              Agregar
+            </button>
+            <button
+              type="button"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
+              onClick={onClosePopUp}
+            >
+              Salir{" "}
+            </button>
+          </div>
+        </div>
+      </form>
+    </>
+  );
+}
+
+function PopDeleteCargo({
+  onClosePopUp,
+  selectedCargo,
+  getData,
+}: PopUpDeleteProps) {
+  const [cargo_info] = useState<cargo>(selectedCargo);
+  const deleteCargo = async () => {
+    const res = await delete_cargo(cargo_info.cargo_id);
+    if (res != undefined) {
+      console.log("Estatus del pedido: ", res.status);
+      const data_ = await res.json();
+
+      console.log("Datos actualizados: ", data_);
+
+      MySwal.fire({
+        title: "¡ Cargo Eliminado correctamente !",
+        //text: "No ha rellenado todos los campos",
+        icon: "success",
+        // confirmButtonText: "Aceptar",
+        buttonsStyling: false,
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+          popup: "bg-azul text-text rounded-3xl text-white",
+        },
+      }).finally(() => {
+        onClosePopUp();
+        getData();
+      });
+    }
+  };
+  return (
+    <>
+      <div className="flex flex-col items-center bg-blanco w-[600px] rounded-lg h-[200px]">
+        <div className="bg-azul w-full h-[15%] rounded-t-md text-blanco font-semibold text-lg">
+          <p>Eliminar Cargo</p>
+        </div>
+        {/* Div Contenido */}
+        <div className=" flex flex-col w-[70%] h-[85%]">
+          {/* fila 1 */}
+
+          {/* fila 2 */}
+          <div className="flex flex-row py-4">
+            <p className="text-2xl font-medium">
+              Esta seguro que desea eliminar el Cargo ?
+            </p>
+          </div>
+
+          {/* fila 3 */}
+
+          <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
+            <button
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-morado hover:border-green-400 hover:font-bold hover:text-base"
+              onClick={() => {
+                deleteCargo();
+              }}
+            >
+              Confirmar
+            </button>
+            <button
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-morado hover:border-red-400 hover:font-bold hover:text-base"
+              onClick={onClosePopUp}
+            >
+              Cancelar{" "}
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
