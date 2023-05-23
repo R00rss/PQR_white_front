@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LayoutBar from "../../components/Navigation/LayoutNavigation";
 import { Link } from "react-router-dom";
-import icono_editar_blanco from "../../assets/icono_editar_blanco.png";
-import icono_borrar from "../../assets/icono_borrar.png";
+import icono_editar from "../../assets/icono_editar.png";
+import icono_delete from "../../assets/icono_delete.png";
 import AgregarArea from "../../components/Configuration/AgregarArea";
 import useArea from "../../hooks/useArea";
 
@@ -63,62 +63,62 @@ export default function Area() {
         selectedArea={selectedArea}
       />
       <div className="flex justify-center items-center w-full">
-        <div className="flex flex-col w-[min(750px,90%)] max-h-[500px] rounded-md shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
+        <div className="flex flex-col w-[70%] max-h-[500px] rounded-md shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
           {/* Encabezado */}
-          <div className="flex w-full h-[35px] items-center justify-center rounded-t-md bg-azul text-blanco">
-            <p className="font-bold text-xl">Configurar Areas</p>
+          <div className="flex w-full  h-[7%] items-center justify-center rounded-t-md bg-azul text-blanco">
+            <p className="font-bold text-lg">Configurar Areas</p>
           </div>
           {/* Contenedor Areas */}
-          <div className="flex flex-col items-center my-4 border border-slate-300 w-[min(650px,90%)] mx-auto rounded-md">
+          <div className="flex flex-col items-center pl-[8%] py-5  w-[100%]">
             {/* Encabezado tabla */}
 
-            <div className="w-full h-[100%]">
-              <div className=" flex flex-row w-full h-[35px] text-sm font-medium bg-slate-200">
-                <div className="flex flex-row text-start w-[50%]">
-                  <p className="text-lg pl-2 text-slate-800">Area</p>
-                  {/* <span className="text-red-600">*</span> */}
+            <div className="w-[80%] h-[100%]">
+              <div className=" flex flex-row w-full h-[8%] text-sm font-medium ">
+                <div className="flex flex-row text-start w-[60%]">
+                  <p>Area</p>
+                  <span className="text-red-600">*</span>
                 </div>
 
-                <div className="flex flex-row w-[50%] items-center justify-center">
-                  <p className="text-lg text-slate-800">Acciones</p>
-                  {/* <span className="text-red-600">*</span> */}
+                <div className="flex flex-row w-[40%]">
+                  <p>Acciones</p>
+                  <span className="text-red-600">*</span>
                 </div>
               </div>
 
               <div className="overflow-y-scroll w-[100%] max-h-[350px]">
                 {/* Cuerpo de tabla */}
                 {areas.map((area) => (
-                  <div key={area.area_id} className="flex flex-col w-full">
-                    <div className="flex flex-row p-1 border-b border-slate-300">
+                  <div key={area.area_id} className="flex flex-col w-ful l">
+                    <div className="flex flex-row p-1">
                       {/* Nombre Area */}
-                      <div className="flex justify-start w-[50%] text-xs overflow-hidden overflow-ellipsis pl-2">
-                        <p className="text-lg text-azul font-semibold">{area.area_name}</p>
+                      <div className="flex justify-start w-[60%] text-xs overflow-hidden overflow-ellipsis">
+                        <p>{area.area_name}</p>
                       </div>
-                      <div className="w-[50%] items-center flex justify-center">
-                        <div className="flex flex-row w-full justify-between gap-8">
-                          <div className="w-[50%]  justify-end flex">
+                      <div className="w-[40%]">
+                        <div className="flex flex-row">
+                          <div className="w-[50%]">
                             <button
-                              className="flex bg-green-500 text-white rounded  w-[50px] h-[30px] items-center justify-center duration-100 hover:scale-105 hover:bg-green-300 shadow-md "
+                              className="flex bg-green-400 text-white rounded  w-[50px] h-[30px] items-center justify-center duration-100 hover:scale-105 hover:bg-green-300 shadow-md "
                               onClick={() => {
                                 editFunc(area.area_id);
                               }}
                             >
                               <img
-                                src={icono_editar_blanco}
+                                src={icono_editar}
                                 className="w-[30%] aspect-square"
                                 alt=""
                               />
                             </button>
                           </div>
-                          <div className="w-[50%] ">
+                          <div className="w-[50%]">
                             <button
-                              className="flex bg-red-500 text-white rounded w-[50px] h-[30px] items-center justify-center duration-100 hover:scale-105 hover:bg-red-300 shadow-md "
+                              className="flex bg-red-400 text-white rounded w-[50px] h-[30px] items-center justify-center duration-100 hover:scale-105 hover:bg-red-300 shadow-md "
                               onClick={() => {
                                 deleteFunc(area.area_id);
                               }}
                             >
                               <img
-                                src={icono_borrar}
+                                src={icono_delete}
                                 className="w-[40%] aspect-square"
                                 alt=""
                               />
@@ -128,14 +128,15 @@ export default function Area() {
                       </div>
                       {/* border */}
                     </div>
+                    <div className="w-[92%]  border-morado border-t-[1px] shadow-md"></div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <div className="flex justify-between mx-auto text-sm font-semibold text-morado mb-4 w-[35%] gap-8">
+          <div className="flex justify-center text-sm font-medium text-morado pb-10 pt-2">
             <button
-              className="w-[50%] h-[35px] border border-morado rounded-md duration-150 hover:bg-morado hover:text-blanco hover:text-bold text-base font-semibold"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
               onClick={() => {
                 addFunc();
               }}
@@ -143,7 +144,7 @@ export default function Area() {
               Agregar
             </button>
             <button
-              className="w-[50%] h-[35px] border border-morado rounded-md duration-150 hover:bg-morado hover:text-blanco hover:text-bold text-base font-semibold"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
               onClick={() => history("/administracion/configuraciones")}
             >
               Salir{" "}

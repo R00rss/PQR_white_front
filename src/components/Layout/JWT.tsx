@@ -1,9 +1,15 @@
 import { createContext, useEffect, useState, ReactNode } from "react";
-
+import { useNavigate } from "react-router-dom";
+import imagen_fondo from "../../assets/fondo_login.png";
 import {
   UserPublic,
   validate_session,
 } from "../../services/userAdministration";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 interface JWTContextType {
   user_info: UserPublic | null;
@@ -18,6 +24,7 @@ export const JWTContext = createContext<JWTContextType>({
 
 export default function JWT({ children }: { children: ReactNode }) {
   //const router = useRouter();
+  const history = useNavigate();
   const [user_info, set_user_info] = useState<UserPublic | null>(null);
   //const [user_image, set_user_image] = useState<null | string>(null);
 
@@ -36,6 +43,28 @@ export default function JWT({ children }: { children: ReactNode }) {
       }
     });
   }, []);
+  useEffect(() => {
+    if (flag_session == false) {
+      MySwal.fire({
+        title: "¡Sesion Expirada!",
+        //text: "No ha rellenado todos los campos",
+        icon: "info",
+        confirmButtonText: "Aceptar",
+        buttonsStyling: false,
+        backdrop: `
+        rgba(0,0,123,0.4)
+        url(${imagen_fondo})
+          `,
+        customClass: {
+          confirmButton:
+            "bg-blanco text-azul rounded-2xl h-[40px] w-[100px]  border-azul",
+          popup: "bg-azul text-blanco  rounded-3xl",
+        },
+      }).finally(() => {
+        history("/");
+      });
+    }
+  }, [flag_session]);
   return (
     <JWTContext.Provider value={{ user_info, set_user_info }}>
       {children}

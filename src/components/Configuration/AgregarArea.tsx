@@ -96,17 +96,14 @@ function PopEditarArea({
         console.log("Datos actualizados: ", data_);
 
         MySwal.fire({
-          title: "!Area actualizada correctamente¡",
+          title: "!Datos Cambiados Correctamente¡",
           //text: "No ha rellenado todos los campos",
           icon: "success",
-          // confirmButtonText: "Aceptar",
-          showConfirmButton: false,
+          confirmButtonText: "Aceptar",
           buttonsStyling: false,
-          timer: 1500,
           customClass: {
-            confirmButton:
-              "bg-azul text-white rounded-2xl h-[40px] w-[100px] text-white",
-            popup: "bg-azul text-text rounded-3xl text-white",
+            confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            popup: "bg-azul text-text rounded-3xl",
           },
         }).finally(() => {
           onClosePopUp();
@@ -146,28 +143,30 @@ function PopEditarArea({
                     value={area_info.area_name}
                     required
                     type="text"
-                    className="pl-2 py-1 w-full text-sm font-light border border-azul rounded px-2 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                    className="pl-2 py-1 w-full text-sm font-light border border-azul rounded focus:border-red-500"
                   />
                 </div>
 
                 {/* Estado */}
+
+                
               </div>
 
               <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
-                <button
-                  type="submit"
-                  className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
-                >
-                  Confirmar
-                </button>
-                <button
-                  type="button"
-                  className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
-                  onClick={onClosePopUp}
-                >
-                  Cancelar
-                </button>
-              </div>
+                  <button
+                    type="submit"
+                    className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
+                  >
+                    Confirmar
+                  </button>
+                  <button
+                    type="button"
+                    className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
+                    onClick={onClosePopUp}
+                  >
+                    Cancelar
+                  </button>
+                </div>
             </div>
 
             {/* fila 3 */}
@@ -216,18 +215,18 @@ function PopAgregarArea({ onClosePopUp, getData }: PopUpAddProps) {
           });
         } else {
           MySwal.fire({
-            title: "¡Area ingresado con exito!",
+            title: "¡Producto ingresado con exito!",
             // text: "Credenciales inválidas",
             icon: "success",
             showConfirmButton: false,
             timer: 1500,
             // confirmButtonText: "Aceptar",
             // buttonsStyling: false,
-            customClass: {
-              confirmButton:
-                "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-              popup: "bg-azul text-text rounded-3xl text-white",
-            },
+            // customClass: {
+            //   confirmButton:
+            //     "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            //   popup: "bg-azul text-text rounded-3xl",
+            // },
           }).finally(() => {
             onClosePopUp();
             getData();
@@ -266,8 +265,8 @@ function PopAgregarArea({ onClosePopUp, getData }: PopUpAddProps) {
 
             {/* fila 2 */}
             <div className="flex flex-row py-4">
-              <p className="text-base font-medium">Nueva Área</p>
-              {/* <span className="text-red-600">*</span> */}
+              <p className="text-sm font-medium">Nueva Área</p>
+              <span className="text-red-600">*</span>
             </div>
             {/* fila 3 */}
             <div>
@@ -280,7 +279,7 @@ function PopAgregarArea({ onClosePopUp, getData }: PopUpAddProps) {
                 }}
                 value={area_info.area_name}
                 type="text"
-                className="w-full border border-azul rounded px-2 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                className="w-full border border-azul rounded focus:border-red-500"
               />
             </div>
             <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
@@ -319,16 +318,14 @@ function PopDeleteArea({
       console.log("Datos actualizados: ", data_);
 
       MySwal.fire({
-        title: "¡Area eliminada correctamente !",
+        title: "¡ Producto Eliminado correctamente !",
         //text: "No ha rellenado todos los campos",
         icon: "success",
-        // confirmButtonText: "Aceptar",
-        showConfirmButton: false,
+        confirmButtonText: "Aceptar",
         buttonsStyling: false,
-        timer: 1500,
         customClass: {
           confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl text-white",
+          popup: "bg-blanco text-text rounded-3xl",
         },
       }).finally(() => {
         onClosePopUp();
@@ -358,7 +355,7 @@ function PopDeleteArea({
 
           <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-morado hover:border-green-400 hover:font-bold hover:text-base"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-blanco"
               onClick={() => {
                 deleteArea();
               }}
@@ -366,7 +363,7 @@ function PopDeleteArea({
               Confirmar
             </button>
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-morado hover:border-red-400 hover:font-bold hover:text-base"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-blanco"
               onClick={onClosePopUp}
             >
               Cancelar{" "}

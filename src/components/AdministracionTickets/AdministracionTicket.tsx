@@ -94,9 +94,9 @@ export default function AdministracionTickets({
         <div className="w-full">
           <div className="w-[97%] h-[30px] mx-auto flex flex-row text-base font-semibold gap-4">
             <button
-              className={`text-sm w-1/4 rounded-b-md bg-gris-claro hover:bg-white hover:border hover:border-gris-claro hover:text-morado hover:font-black duration-300 ${
+              className={`w-1/4 rounded-b-md bg-gris-claro hover:bg-white hover:border hover:border-gris-claro hover:text-morado hover:font-black hover:text-base duration-300 ${
                 selectedButton === "button1" &&
-                "bg-white border border-gris-claro text-morado font-black text-sm"
+                "bg-white border border-gris-claro text-morado font-black text-base"
               }`}
               onClick={() => handleButtonClick("button1")}
             >
@@ -123,7 +123,7 @@ export default function AdministracionTickets({
               Respaldo
             </button>
             <button
-              className={`w-1/4 rounded-b-md bg-gris-claro hover:bg-white hover:border hover:border-gris-claro hover:text-morado hover:font-black duration-300 ${
+              className={`w-1/4 rounded-b-md bg-gris-claro hover:bg-white hover:border hover:border-gris-claro hover:text-morado hover:font-black hover:text-base duration-300 ${
                 selectedButton === "button4"
                   ? "bg-white border border-gris-claro text-morado font-black text-base"
                   : " bg-gris-claro"

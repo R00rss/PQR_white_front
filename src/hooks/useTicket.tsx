@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { get_areas } from "../services/area";
-import { get_tickets, get_tickets_by_user } from "../services/ticket";
+import {
+  count_tickets,
+  get_tickets,
+  get_tickets_by_user,
+} from "../services/ticket";
 import Ticket from "../pages/Ticket/NewTicket";
 
 export type ticket = {

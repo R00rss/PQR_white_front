@@ -1,18 +1,14 @@
 import icono_ticket from ".././assets/icono_ticket.png";
 import icono_editar from "../../assets/icono_editar.png";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Edit from "./Edit";
 import useUserType from "../../hooks/useUserType";
 import useRol from "../../hooks/useRol";
 import useArea from "../../hooks/useArea";
 import useAgency from "../../hooks/useAgency";
 import Swal from "sweetalert2";
-const MySwal = withReactContent(Swal);
 import withReactContent from "sweetalert2-react-content";
 import { update_user } from "../../services/user";
-import { remove_token, set_token } from "../../services/globals";
-import { JWTContext } from "../Layout/JWT";
-import { validate_session } from "../../services/userAdministration";
 
 interface IArea {
   area_name: string;
@@ -57,11 +53,6 @@ interface EditUserProps {
   userData: UserData;
   getData: Function;
 }
-
-const states = {
-  Activo: 1,
-  Inactivo: 0,
-};
 const DEFAULT_OPTION = "Ingrese una opción";
 
 export default function EditUser({
@@ -71,7 +62,6 @@ export default function EditUser({
   getData,
 }: EditUserProps) {
   console.log(userData);
-  const { set_user_info } = useContext(JWTContext);
   const { userTypes } = useUserType();
   const { roles, getDataRole } = useRol();
   const { areas } = useArea();
@@ -81,43 +71,37 @@ export default function EditUser({
   const [secondSelectValue, setSecondSelectValue] = useState<string>("");
 
   const [user_to_edit, set_user_to_edit] = useState({
-    name: "",
-    username: "",
-    email: "",
-    user_type_id: "",
-    profile_id: "",
-    area_id: "",
-    agency_id: "",
-    cargo_id: "",
+    name: userData.fullname,
+    username: userData.username,
+    email: userData.mail,
+    user_type_id: userData.user_type.user_type_id,
+    profile_id: userData.user_role.user_role_id,
+    area_id: userData.cargo.area.area_id,
+    agency_id: userData.agencia.agencia_id,
+    cargo_id: userData.cargo.cargo_id,
     is_active: 0,
   });
-  useEffect(() => {
-    console.log(user_to_edit);
-  }, [user_to_edit]);
-
-  useEffect(() => {
-    console.log(userData.is_active);
-    const aux = {
-      name: userData.fullname,
-      username: userData.username,
-      email: userData.mail,
-      user_type_id: userData.user_type.user_type_id,
-      profile_id: userData.user_role.user_role_id,
-      area_id: userData.cargo.area.area_id,
-      agency_id: userData.agencia.agencia_id,
-      cargo_id: userData.cargo.cargo_id,
-      is_active: userData.is_active,
-    };
-    console.log(aux);
-    set_user_to_edit(aux);
-  }, [userData]);
-
   function handle_undo(key: keyof UserData) {
     set_user_to_edit({
       ...user_to_edit,
       [key]: userData[key],
     });
   }
+
+  const handleFirstSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    // console.log(event.target.value);
+    const selectedValue = event.target.value;
+    setFirstSelectValue(selectedValue);
+    // setIsSecondSelectDisabled(selectedValue !== "1");
+    setSecondSelectValue("");
+    set_user_to_edit({
+      ...user_to_edit,
+      user_type_id: selectedValue,
+    });
+  };
+
   console.log(userTypes);
   let perfil_options = userTypes.filter((userType) => {
     return userType.user_type_id === user_to_edit.user_type_id;
@@ -144,34 +128,12 @@ export default function EditUser({
     });
   }
 
-  function handleSelectChangeProfile(
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) {
-    const new_profile = event.target.value;
-    console.log(new_profile);
-    set_user_to_edit({
-      ...user_to_edit,
-      profile_id: new_profile,
-    });
-  }
-
   function handleSelectChangeArea(event: React.ChangeEvent<HTMLSelectElement>) {
     const new_area = event.target.value;
     console.log(new_area);
     set_user_to_edit({
       ...user_to_edit,
       area_id: new_area,
-    });
-  }
-
-  function handleSelectChangeCargo(
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) {
-    const new_cargo = event.target.value;
-    console.log(new_cargo);
-    set_user_to_edit({
-      ...user_to_edit,
-      cargo_id: new_cargo,
     });
   }
 
@@ -186,14 +148,25 @@ export default function EditUser({
     });
   }
 
-  function handleSelectChangeState(
+  function handleSelectChangeCargo(
     event: React.ChangeEvent<HTMLSelectElement>
   ) {
-    console.log(event.target.value);
-    const new_state = event.target.value;
+    const new_cargo = event.target.value;
+    console.log(new_cargo);
     set_user_to_edit({
       ...user_to_edit,
-      is_active: Number(new_state),
+      cargo_id: new_cargo,
+    });
+  }
+
+  function handleSelectChangeProfile(
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) {
+    const new_profile = event.target.value;
+    console.log(new_profile);
+    set_user_to_edit({
+      ...user_to_edit,
+      profile_id: new_profile,
     });
   }
 
@@ -207,6 +180,70 @@ export default function EditUser({
     editUser(event);
   }
 
+  useEffect(() => {
+    console.log(user_to_edit);
+  }, [user_to_edit]);
+
+  useEffect(() => {
+    console.log(user_to_edit, userData);
+    if (userData)
+      set_user_to_edit({
+        name: userData.fullname,
+        username: userData.username,
+        email: userData.mail,
+        user_type_id: userData.user_type.user_type_id,
+        profile_id: userData.user_role.user_role_id,
+        area_id: userData.cargo.area.area_id,
+        agency_id: userData.agencia.agencia_id,
+        cargo_id: userData.cargo.cargo_id,
+        is_active: 0,
+      });
+  }, [userData]);
+
+  useEffect(() => {
+    console.log(firstSelectValue);
+  }, [firstSelectValue]);
+
+  ///////////////////// Update product /////////////////////////
+  const editUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (event.currentTarget.checkValidity()) {
+      const res = await update_user({
+        fullname: user_to_edit.name,
+        mail: user_to_edit.email,
+        username: user_to_edit.username,
+        user_role_id: user_to_edit.profile_id,
+        cargo_id: user_to_edit.cargo_id,
+        agencia_id: user_to_edit.agency_id,
+        user_type_id: user_to_edit.user_type_id,
+        is_active: user_to_edit.is_active,
+        user_id: userData.user_id,
+      });
+      if (res != undefined) {
+        console.log("Estatus del pedido: ", res.status);
+        const data_ = await res.json();
+
+        console.log("Datos actualizados: ", data_);
+
+        Swal.fire({
+          title: "!Datos Cambiados Correctamente¡",
+          //text: "No ha rellenado todos los campos",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            popup: "bg-azul text-text rounded-3xl",
+          },
+        }).finally(() => {
+          onCLosePopUp();
+          getData();
+        });
+      }
+    }
+  };
+  //TODO cambiar el luigar de esta mamada
   const handle_change_edit_input = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -216,172 +253,13 @@ export default function EditUser({
     });
   };
 
-  useEffect(() => {
-    console.log(firstSelectValue);
-  }, [firstSelectValue]);
-
-  ///////////////////// Update User /////////////////////////
-  const editUser = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (event.currentTarget.checkValidity() === false) {
-      event.currentTarget.reportValidity();
-      return;
-    }
-    if (
-      user_to_edit.name === "" ||
-      user_to_edit.username === "" ||
-      user_to_edit.email === "" ||
-      user_to_edit.user_type_id === "" ||
-      user_to_edit.profile_id === "" ||
-      user_to_edit.area_id === "" ||
-      user_to_edit.cargo_id === "" ||
-      user_to_edit.agency_id === ""
-    ) {
-      MySwal.fire({
-        title: "Alerta!",
-        text: "Debe completar todos los campos",
-        icon: "warning",
-        confirmButtonText: "Aceptar",
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl",
-        },
-      });
-    }
-
-    const usert_to_update = {
-      fullname: user_to_edit.name,
-      mail: user_to_edit.email,
-      username: user_to_edit.username,
-      user_role_id: user_to_edit.profile_id,
-      cargo_id: user_to_edit.cargo_id,
-      agencia_id: user_to_edit.agency_id,
-      user_type_id: user_to_edit.user_type_id,
-      is_active: user_to_edit.is_active,
-      user_id: userData.user_id,
-    };
-
-    console.log("usert_update", usert_to_update);
-    const res = await update_user(usert_to_update);
-    if (!res) {
-      MySwal.fire({
-        title: "¡Error!",
-        text: "Undefined",
-        icon: "error",
-        confirmButtonText: "Aceptar",
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl",
-        },
-      });
-      return;
-    }
-    if (res.status != 200) {
-      MySwal.fire({
-        title: "¡Error!",
-        //text: estado,
-        icon: "error",
-        confirmButtonText: "Aceptar",
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl",
-        },
-      });
-      return;
-    }
-    //caso en el que se realizo el update
-    const data_ = await res.json();
-    // caso en que la respuesta no se obtiene y no sabemos que usuario se actualizo
-    if (!("user_id" in data_)) {
-      MySwal.fire({
-        title: "alerta!",
-        text: "Se actualizo con éxito pero no se pudo obtener el id del usuario",
-        icon: "warning",
-        showConfirmButton: false,
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl",
-        },
-        timer: 1500,
-      }).finally(() => {
-        location.reload();
-        // onCLosePopUp(); //TODO REFACTORIZAR ESTO
-        // getData();
-      });
-    }
-    // caso optimo
-
-    if ("token" in data_) {
-      remove_token();
-      set_token(data_.token);
-      validate_session().then((data) => {
-        if (data) {
-          set_user_info(data);
-        }
-      });
-    }
-
-    MySwal.fire({
-      title: "¡Usuario Actualizado con éxito!",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-      customClass: {
-        popup: "bg-azul text-text rounded-3xl text-white",
-      },
-    }).finally(() => {
-      onCLosePopUp(); //TODO REFACTORIZAR ESTO
-      getData();
-    });
-
-    // if (event.currentTarget.checkValidity()) {
-    //   const res = await update_user({
-    //     fullname: user_to_edit.name,
-    //     mail: user_to_edit.email,
-    //     username: user_to_edit.username,
-    //     user_role_id: user_to_edit.profile_id,
-    //     cargo_id: user_to_edit.cargo_id,
-    //     agencia_id: user_to_edit.agency_id,
-    //     user_type_id: user_to_edit.user_type_id,
-    //     is_active: user_to_edit.is_active,
-    //     user_id: userData.user_id,
-    //   });
-    //   if (res != undefined) {
-    //     console.log("Estatus del pedido: ", res.status);
-    //     const data_ = await res.json();
-
-    //     console.log("Datos actualizados: ", data_);
-
-    //     Swal.fire({
-    //       title: "!Datos Cambiados Correctamente¡",
-    //       //text: "No ha rellenado todos los campos",
-    //       icon: "success",
-    //       confirmButtonText: "Aceptar",
-    //       buttonsStyling: false,
-    //       customClass: {
-    //         confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-    //         popup: "bg-azul text-text rounded-3xl",
-    //       },
-    //     }).finally(() => {
-    //       onCLosePopUp();
-    //       getData();
-    //     });
-    //   }
-    // }
-  };
-
   ////////////////////////////////////////////////////////////////////////
 
   if (!showPopUp) return <></>;
   return (
     <div className="flex fixed w-full h-full bg-black/50 z-10 top-0 left-0 bottom-0 right-0 justify-center items-center">
       <form
-        className="w-[min(550px,80%)] mb-32  bg-white rounded-md"
+        className="w-[40%] mb-32  bg-white rounded-md"
         onSubmit={handle_submit}
         noValidate
       >
@@ -442,7 +320,7 @@ export default function EditUser({
           <div className="w-1/3 flex flex-col gap-4">
             {/* Tipo */}
             <div className="flex flex-col">
-              <p className="text-gris text-sm">Tipo de usuario</p>
+              <p className="text-gris">Tipo de usuario</p>
               <select
                 className="appearance-none rounded-md border text-center border-gris text-gris text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] cursor-pointer"
                 value={user_to_edit.user_type_id}
@@ -540,61 +418,23 @@ export default function EditUser({
             {/* Estado */}
             <div className="flex flex-col">
               <p>Estado</p>
-              <select
-                className="appearance-none rounded-md border text-center border-gris text-gris text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] cursor-pointer"
-                onChange={handleSelectChangeState}
-                value={user_to_edit.is_active}
-              >
-                {/* {userData.is_active === 1 ? (
-                  <>
-                    <option value={1} className="text-center">
-                      Activo
-                    </option>
-                    <option value={1} className="text-center">
-                      Inactivo
-                    </option>
-                  </>
-                ) : (
-                  <></>
-                )} */}
-                <option value={userData.is_active} className="text-center">
-                  {userData.is_active === 1 ? "Activo" : "Inactivo"}
-                </option>
-                <option
-                  value={userData.is_active === 1 ? 0 : 1}
-                  className="text-center"
-                >
-                  {userData.is_active === 1 ? "Inactivo" : "Activo"}
-                </option>
-                {/* {Object.keys(states).map((key_states, i) => {
-                  if (userData.is_active === 1) {
-                    return (
-                      <option value={1} className="text-center">
-                        Inactivo
-                      </option>
-                    );
-                  } else {
-                    return (
-                      <option value={1} className="text-center">
-                        Activo
-                      </option>
-                    );
-                  }
-                })} */}
+              <select className="appearance-none rounded-md border text-center border-gris text-gris text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] cursor-pointer">
+                <option value="1">Activo</option>
+                <option value="2">Inactivo</option>
               </select>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-row h-9 w-[40%] mx-auto items-center justify-center gap-8 my-6">
+        <div className="flex flex-row h-9 w-[40%] mx-auto items-center justify-center gap-12 my-6">
           <button
-            className="h-full w-[50%] text-morado font-semibold border border-morado rounded-md hover:text-white hover:bg-morado"
+            className="h-full w-[30%] text-morado font-semibold border border-morado rounded-md hover:text-white hover:bg-morado"
             type="submit"
           >
             Guardar
           </button>
           <button
-            className="h-full w-[50%] text-morado font-semibold border border-morado rounded-md hover:text-white hover:bg-morado"
+            className="h-full w-[30%] text-morado font-semibold border border-morado rounded-md hover:text-white hover:bg-morado"
             onClick={onCLosePopUp}
           >
             Salir

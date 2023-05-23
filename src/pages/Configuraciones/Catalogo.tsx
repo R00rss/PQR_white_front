@@ -6,7 +6,6 @@ import EditCatalog from "../../components/EditCatalog/EditCatalog";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { update_catalog_state } from "../../services/catalog";
-import { Link } from "react-router-dom";
 const MySwal = withReactContent(Swal);
 
 interface ITypes {
@@ -244,12 +243,11 @@ export default function Catalogo() {
     <LayoutBar opcionSeleccionada="administracion">
       <div className="flex flex-col  h-[520px] w-[min(1000px,90%)]">
         <div className="flex flex-row h-[10%]">
-          <div className="w-1/2 text-morado text-sm font-semibold  text-start pl-2">
+          <div className="w-1/2  text-morado text-sm font-semibold  text-start pl-2">
             <button onClick={handleShowPopUp}>Agregar nuevo catalogo</button>
             <AgregarCatalogo
               showPopUp={showPopUp}
               onCLosePopUp={handleClosePopUp}
-              getData={getData}
             />
           </div>
           <div className=" flex flex-row w-1/2  my-auto gap-2 justify-end pr-2">
@@ -264,8 +262,8 @@ export default function Catalogo() {
           </div>
         </div>
         <div className="flex flex-col h-full">
-          <div className="flex flex-col w-full  border-l border-r border-b border-slate-300  mx-auto rounded-md">
-            <div className="flex flex-row w-full h-[50px] bg-azul rounded-t-md items-center">
+          <div className="flex flex-col w-full h-[90%] border-l border-r border-b border-slate-300  mx-auto rounded-md">
+            <div className="flex flex-row w-full h-[12%] bg-azul rounded-t-md items-center">
               <div className="w-[20%]  ">
                 <p className="text-white font-semibold text-start pl-4">Tipo</p>
               </div>
@@ -302,7 +300,6 @@ export default function Catalogo() {
                 showPopUp={showPopUpEditCatalog}
                 onCLosePopUp={handleClosePopUpEditCatalog}
                 catalogData={selectedCatalog}
-                getData={getData}
               />
             )}
 
@@ -376,16 +373,7 @@ export default function Catalogo() {
           </div>
 
           <div className="flex flex-row justify-end my-4">
-            <div className="flex items-center justify-start ml-6 text-center">
-              <Link
-                to={"/administracion/configuraciones"}
-                className="w-[95px] border border-morado rounded-md h-[35px] text-morado font-semibold hover:bg-morado hover:text-white duration-200 flex items-center justify-center"
-              >
-                Salir
-              </Link>
-            </div>
-
-            <div className="flex flex-row justify-center gap-8 mx-auto">
+            <div className="flex flex-row  justify-center gap-8 mx-auto">
               <button
                 className="w-[100px] h-[35px] text-morado font-semibold rounded-md border border-morado hover:text-white hover:bg-morado duration-300"
                 onClick={prevPage}

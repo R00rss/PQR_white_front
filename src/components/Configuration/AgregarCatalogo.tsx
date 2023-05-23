@@ -14,7 +14,6 @@ import { get_user_by_area } from "../../services/user";
 interface AñadirCatalogoProps {
   showPopUp: boolean;
   onCLosePopUp: () => void;
-  getData: Function;
 }
 enum TypeTime {
   Opcion1 = "Inmediato",
@@ -65,7 +64,6 @@ const DEFAULT_OPTION = "Ingrese una opción";
 export default function AgregarCatalogo({
   showPopUp,
   onCLosePopUp,
-  getData,
 }: AñadirCatalogoProps) {
   /* Hook */
   const { types } = useType();
@@ -73,8 +71,8 @@ export default function AgregarCatalogo({
   const { incidences } = useIncidence();
   const { areas } = useArea();
   const [users_by_area, set_users_by_area] = useState<user[]>([]);
-  // const [setloading] = useState(false);
-  // const [seterror] = useState(null);
+  const [setloading] = useState(false);
+  const [seterror] = useState(null);
   /* check validate  */
   const [isSelectedProducto, setIsSelectedProducto] = useState("");
   const [isSelectedTipo, setIsSelectedTipo] = useState("");
@@ -93,8 +91,6 @@ export default function AgregarCatalogo({
     orq_id: DEFAULT_OPTION,
     time: 0,
   });
-
-  /* Flags */
 
   const flag_users_by_area = users_by_area.length > 0;
   const flag_types = isSelectedTipo !== DEFAULT_OPTION;
@@ -337,7 +333,7 @@ export default function AgregarCatalogo({
       timer: 1500,
     }).finally(() => {
       onCLosePopUp(); //TODO REFACTORIZAR ESTO
-      getData();
+      //TODO  getData();
     });
   }
   ////////////////////////////////////////////////////////////////////////////////

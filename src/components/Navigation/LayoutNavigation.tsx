@@ -2,10 +2,10 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import React from "react";
-import icono_ticket from "../..//assets/icono_ticket.png";
-import icono_dashboard from "../../assets/icono_dashboard.png";
-import icono_administracion from "../../assets/icono_administracion.png";
-import icono_reportes from "../../assets/icono_reportes.png";
+import icono_ticket from "../..//assets/icono_ticket.png"
+import icono_dashboard from "../../assets/icono_dashboard.png"
+import icono_administracion from "../../assets/icono_administracion.png"
+import icono_reportes from "../../assets/icono_reportes.png"
 type Option = {
   name: string;
   id: string;
@@ -14,7 +14,7 @@ type Option = {
   option1?: string;
   option2?: string;
   option3?: string;
-  option4?: string;
+  option4?: string; 
 };
 
 const options = {
@@ -28,16 +28,16 @@ const options = {
         path: "/dashboard/integral",
         name: "Integral",
       },
-      // {
-      //   id: "2",
-      //   path: "/dashboard/gestion",
-      //   name: "Gestión",
-      // },
-      // {
-      //   id: "3",
-      //   path: "/dashboard/experiencia_cliente",
-      //   name: "Experiencia del cliente",
-      // },
+      {
+        id: "2",
+        path: "/dashboard/gestion",
+        name: "Gestión",
+      },
+      {
+        id: "3",
+        path: "/dashboard/experiencia_cliente",
+        name: "Experiencia del cliente",
+      },
     ],
   },
   ticket: {
@@ -109,10 +109,9 @@ export default function LayoutBar({
         </div>
 
         <div className="mx-auto text-center mt-6  w-full flex ">
-          <div className="flex justify-center items-center w-full">
-            {children}
-          </div>
+          <div className="flex justify-center items-center w-full">{children}</div>
         </div>
+        
       </div>
     </div>
   );

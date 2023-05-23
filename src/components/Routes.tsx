@@ -113,14 +113,14 @@ export default function AppRoutes() {
             </JWT>
           }
         />
-        {/* <Route
+        <Route
           path="/administracion/configuraciones/sla"
           element={
             <JWT>
               <Sla />
             </JWT>
           }
-        /> */}
+        />
         <Route
           path="/administracion/configuraciones/catalogo"
           element={

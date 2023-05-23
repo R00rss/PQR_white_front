@@ -111,16 +111,14 @@ function PopEditarCargo({
         console.log("Datos actualizados: ", data_);
 
         MySwal.fire({
-          title: "!Cargo actualizado correctamente¡",
+          title: "!Datos Cambiados Correctamente¡",
           //text: "No ha rellenado todos los campos",
           icon: "success",
-          // confirmButtonText: "Aceptar",
-          showConfirmButton: false,
+          confirmButtonText: "Aceptar",
           buttonsStyling: false,
-          timer: 1500,
           customClass: {
             confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-            popup: "bg-azul text-text rounded-3xl text-white",
+            popup: "bg-azul text-text rounded-3xl",
           },
         }).finally(() => {
           onClosePopUp();
@@ -146,23 +144,21 @@ function PopEditarCargo({
 
   return (
     <>
-      <div className="flex flex-col items-center bg-blanco w-[min(550px,90%)] rounded-lg duration-200 transform ">
-        <div className="bg-azul w-full h-[35px] rounded-t-md text-blanco font-semibold text-lg flex items-center justify-center">
-          <p className="text-xl">Editar Cargo</p>
+      <div className="flex flex-col items-center bg-blanco w-[600px] rounded-lg duration-200 transform ">
+        <div className="bg-azul w-full h-[15%] rounded-t-md text-blanco font-semibold text-lg">
+          <p>Editar Cargo</p>
         </div>
 
-        <div className="w-[80%]">
+        <div className="w-[70%]">
           <form action="flex flex-col w-full" onSubmit={editCargo} noValidate>
             <div className="flex flex-col w-full">
               {/* fila 1 */}
 
               {/* fila 2 */}
-              <div className="flex flex-row my-2 w-full">
+              <div className="flex flex-row py-4 w-full">
                 <div className="flex flex-row w-[100%]">
-                  <p className="text-base font-semibold text-morado">
-                    Nombre Producto
-                  </p>
-                  {/* <span className="text-red-600">*</span> */}
+                  <p className="text-sm font-medium">Nombre Producto</p>
+                  <span className="text-red-600">*</span>
                 </div>
               </div>
               <div className="flex flex-row w-full">
@@ -177,22 +173,20 @@ function PopEditarCargo({
                     value={cargo_info.cargo_name}
                     required
                     type="text"
-                    className="text-base px-2 mb-2 h-[30px] w-full font-medium border border-azul rounded focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                    className="pl-2 py-1 w-full text-sm font-light border border-azul rounded focus:border-red-500"
                   />
                 </div>
 
                 {/* Estado */}
               </div>
-              <div className="flex flex-row w-full">
+              <div className="flex flex-row pttstest-4 w-full">
                 <div className="flex flex-row w-[100%]">
-                  <p className="text-base text-morado font-semibold">
-                    Area del Cargo
-                  </p>
-                  {/* <span className="text-red-600">*</span> */}
+                  <p className="text-sm font-medium">Area del Cargo</p>
+                  <span className="text-red-600">*</span>
                 </div>
               </div>
 
-              <div className="flex flex-row w-full">
+              <div className="flex flex-row py-4 w-full">
                 <div className="flex flex-row w-[100%]">
                   {/* {area_info && (
                     <SelectArea
@@ -204,7 +198,7 @@ function PopEditarCargo({
                   <select
                     name=""
                     id=""
-                    className="w-full border border-azul rounded mt-2 h-[30px] px-2 text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                    className="w-full border border-azul rounded "
                     onChange={handle_select}
                     value={cargo_info.area.area_name}
                   >
@@ -219,7 +213,7 @@ function PopEditarCargo({
                 </div>
               </div>
 
-              <div className="flex justify-center text-base font-medium text-morado my-4">
+              <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
                 <button
                   type="submit"
                   className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
@@ -324,18 +318,18 @@ function PopAgregarCargo({ onClosePopUp, getData }: PopUpAddProps) {
           });
         } else {
           MySwal.fire({
-            title: "Cargo ingresado con éxito!",
+            title: "Cargo ingresado con exito!",
             // text: "Credenciales inválidas",
             icon: "success",
             showConfirmButton: false,
             timer: 1500,
             // confirmButtonText: "Aceptar",
             // buttonsStyling: false,
-            customClass: {
-              confirmButton:
-                "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-              popup: "bg-azul text-text rounded-3xl text-white",
-            },
+            // customClass: {
+            //   confirmButton:
+            //     "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            //   popup: "bg-azul text-text rounded-3xl",
+            // },
           }).finally(() => {
             onClosePopUp();
             getData();
@@ -361,18 +355,18 @@ function PopAgregarCargo({ onClosePopUp, getData }: PopUpAddProps) {
     <>
       <form
         onSubmit={handle_submit}
-        className="flex flex-col items-center bg-blanco w-[600px] rounded-lg"
+        className="flex flex-col items-center bg-blanco w-[600px] rounded-lg h-[300px]"
       >
-        <div className="bg-azul w-full h-[40px] rounded-t-md text-blanco font-semibold text-lg justify-center items-center flex">
-          <p className="text-xl font-semibold">Agregar Cargo</p>
+        <div className="bg-azul w-full h-[15%] rounded-t-md text-blanco font-semibold text-lg">
+          <p>Agregar Cargo</p>
         </div>
         {/* Div Contenido */}
         <div className=" flex flex-col w-[70%] h-[85%]">
-          {/* fila 1 */}
+          {/* fila 1 */}onSubmit
           {/* fila 2 */}
-          <div className="flex flex-row mt-2">
-            <p className="text-base font-bold text-morado">Nuevo Cargo</p>
-            {/* <span className="text-red-600">*</span> */}
+          <div className="flex flex-row py-4">
+            <p className="text-sm font-medium">Nuevo Cargo</p>
+            <span className="text-red-600">*</span>
           </div>
           {/* fila 3 */}
           <div>
@@ -382,18 +376,18 @@ function PopAgregarCargo({ onClosePopUp, getData }: PopUpAddProps) {
                 setCargoInfo({ ...cargo_info, cargo_name: e.target.value })
               }
               type="text"
-              className="w-full border border-azul rounded mt-2 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] px-2"
+              className="w-full border border-azul rounded focus:border-red-500"
             />
           </div>
-          <div className="flex flex-row mt-2">
-            <p className="text-base font-bold text-morado">Elegir Area</p>
-            {/* <span className="text-red-600">*</span> */}
+          <div className="flex flex-row py-2">
+            <p className="text-sm font-medium">Elegir Area</p>
+            <span className="text-red-600">*</span>
           </div>
           <div className="flex flex-row py-2">
             <select
               name=""
               id=""
-              className="w-full border border-azul rounded h-[28px] focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+              className="w-full border border-azul rounded "
               onChange={handle_select}
               value={cargo_info.area.area_name}
             >
@@ -406,7 +400,7 @@ function PopAgregarCargo({ onClosePopUp, getData }: PopUpAddProps) {
               })}
             </select>
           </div>
-          <div className="flex justify-center text-base font-medium text-morado my-4">
+          <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
             <button
               type="submit"
               className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
@@ -445,13 +439,11 @@ function PopDeleteCargo({
         title: "¡ Cargo Eliminado correctamente !",
         //text: "No ha rellenado todos los campos",
         icon: "success",
-        // confirmButtonText: "Aceptar",
+        confirmButtonText: "Aceptar",
         buttonsStyling: false,
-        showConfirmButton: false,
-        timer: 1500,
         customClass: {
           confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl text-white",
+          popup: "bg-blanco text-text rounded-3xl",
         },
       }).finally(() => {
         onClosePopUp();
@@ -480,7 +472,7 @@ function PopDeleteCargo({
 
           <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-morado hover:border-green-400 hover:font-bold hover:text-base"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-blanco"
               onClick={() => {
                 deleteCargo();
               }}
@@ -488,7 +480,7 @@ function PopDeleteCargo({
               Confirmar
             </button>
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-morado hover:border-red-400 hover:font-bold hover:text-base"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-blanco"
               onClick={onClosePopUp}
             >
               Cancelar{" "}

@@ -36,7 +36,7 @@ export default function CreateUser({
   onClosePopup,
   getData,
 }: CreateUserProps) {
-  const [show_second_select, set_show_second_select] = useState(false);
+  const [showSecondSelect, setShowSecondSelect] = useState(true);
   const { roles } = useRole();
   DEFAULT_OPTION;
   const { userTypes } = useUserType();
@@ -68,8 +68,6 @@ export default function CreateUser({
     return area.area_name === user_to_send.area;
   });
   console.log("Area options:", cargo_options);
-
-  /* Handle functions */
 
   function handleSelectUserAgency(event: React.ChangeEvent<HTMLSelectElement>) {
     const new_agency = event.target.value;
@@ -106,19 +104,14 @@ export default function CreateUser({
   ) {
     const new_profile = event.target.value;
     console.log(new_profile);
-
     set_user_to_send({
       ...user_to_send,
       profile: new_profile,
     });
-    if (
-      new_profile === DEFAULT_OPTION ||
-      new_profile === "5f504edd-fcd1-4cfa-895f-376b2bd42e08"
-    ) {
-      set_show_second_select(false);
-    } else {
-      set_show_second_select(true);
-    }
+
+    setShowSecondSelect(
+      new_profile != "Ingresador"
+    );
   }
 
   function handleSelectChangePosition(
@@ -130,11 +123,16 @@ export default function CreateUser({
       ...user_to_send,
       cargo: new_position,
     });
+
+    // setShowSecondSelect(
+    //   new_profile != "Ingresador" && new_profile != DEFAULT_OPTION
+    // );
   }
 
   function handle_submit(event: any) {
     event.preventDefault();
     console.log("submit");
+    /* Add aduser function */
     addUser(event);
   }
 
@@ -153,6 +151,7 @@ export default function CreateUser({
         cargo_id: user_to_send.cargo,
         agencia_id: user_to_send.agency,
         user_type_id: user_to_send.user_type,
+        // phone: "123456789",
       });
       console.log(res);
       if (res) {
@@ -165,6 +164,7 @@ export default function CreateUser({
         if (res.status != 200) {
           MySwal.fire({
             title: "¡Error!",
+            //text: estado,
             icon: "error",
             confirmButtonText: "Aceptar",
             buttonsStyling: false,
@@ -176,13 +176,11 @@ export default function CreateUser({
           });
         } else {
           MySwal.fire({
-            title: "¡Usuario ingresado con exito!",
+            title: "¡Producto ingresado con exito!",
+            // text: "Credenciales inválidas",
             icon: "success",
             showConfirmButton: false,
             timer: 1500,
-            customClass: {
-              popup: "bg-azul text-text rounded-3xl text-white",
-            },
           }).finally(() => {
             onClosePopup();
             getData();
@@ -212,7 +210,7 @@ export default function CreateUser({
         noValidate
         className="w-[min(550px,90%)] bg-white rounded-md flex flex-col mb-1"
       >
-        <div className="flex w-full bg-azul h-[40px] rounded-t-md items-center justify-center">
+        <div className="flex w-full bg-azul h-[7%] rounded-t-md items-center justify-center">
           <p className="text-white font-bold text-2xl">Crear usuario</p>
         </div>
 
@@ -292,7 +290,8 @@ export default function CreateUser({
               </select>
             </div>
           </div>
-          {show_second_select && (
+
+          {showSecondSelect && (
             <div>
               <div className="flex flex-row gap-4">
                 {/* Area */}
@@ -356,6 +355,11 @@ export default function CreateUser({
               </div>
             </div>
           )}
+
+          <div className="flex flex-col text-gris font-semibold text-base text-left ">
+            <p className="">Imagen de perfil</p>
+            <input type="file" className="border border-gris rounded-md mt-1" />
+          </div>
         </div>
 
         <div className=" flex flex-row justify-between w-[40%] mx-auto my-4 text-morado font-semibold h-[35px]">

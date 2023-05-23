@@ -45,8 +45,29 @@ interface Users {
 export default function UserAdministration() {
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
-  const {
-    users,
+
+  // const [users, setUsers] = useState<Users[]>([]);
+  // const [selectedUser, setSelectedUser] = useState<null | Users>(null);
+
+  // useEffect(() => {
+  //   get_users()
+  //     .then((response) => {
+  //       if (response) {
+  //         return response.json();
+  //       } else {
+  //         return null;
+  //       }
+  //     })
+  //     .then((data: Users[]) => {
+  //       if (data) {
+  //         setUsers(data);
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // }, []);
+  const {users,
     setUsers,
     loading,
     error,
@@ -55,7 +76,7 @@ export default function UserAdministration() {
     selectedUser,
     setSelectedUser,
     // getItemByName,
-    getItemByArea,
+    getItemByArea
   } = useUser();
 
   let maxPage = Math.ceil(users.length / 7);
@@ -104,7 +125,6 @@ export default function UserAdministration() {
 
   function handleClick(user: Users) {
     handleShowPopUp();
-    console.log(user);
     setSelectedUser(user);
   }
 
@@ -127,10 +147,10 @@ export default function UserAdministration() {
         {/* Hijo 1 */}
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-4 w-[80%]">
-            <p className="text-gris text-base my-auto pl-4">Buscar</p>
+            <p className="text-gris text-base my-auto">Buscar</p>
             <input
               className="w-1/2 rounded-md border-gris-claro border focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] px-2"
-              placeholder="Buscar usuario"
+              placeholder="buscar usuario .."
               type="text"
               value={search}
               onChange={onSearchChange}
@@ -151,38 +171,33 @@ export default function UserAdministration() {
 
         <div className="w-full h-[372px] rounded-lg border border-gris-claro mt-4 cursor-pointer">
           <div className="flex flex-row bg-azul sm:h-[36px] rounded-t-lg justify-between text-white font-semibold ">
-            <p className="w-[31%] my-auto pl-8 text-left  ">Nombres</p>
-            <p className="w-[27%] my-auto">Correo</p>
-            <p className="w-[15%] my-auto text-end text-sm">
-              Perfil de Usuario
-            </p>
-            <p className="w-[9%] my-auto">Estado</p>
-            <p className="w-[18%] my-auto text-center">User ID</p>
+            <p className="w-2/6 my-auto pl-8 text-left  ">Nombres</p>
+            <p className="w-1/6 my-auto ">Correo</p>
+            <p className=" w-2/6 my-auto pr-2 text-end ">Tipo de Usuario</p>
+            <p className="w-1/6 my-auto pl-8 ">Estado</p>
+            <p className="w-1/6 my-auto text-center ">User ID</p>
           </div>
           {filteredUsers().map((user) => (
             <div
               className=" w-full h-12 flex flex-row border border-b-gris-claro"
               key={user.user_id}
-              onClick={() => {
-                console.log(user);
-                handleClick(user);
-              }}
+              onClick={() => handleClick(user)}
             >
               <p className="w-[31%] my-auto pl-6 text-left text-base font-medium text-azul  ">
                 {user.fullname}
               </p>
-              <p className="w-[27%] my-auto text-start">{user.mail}</p>
-              <p className="w-[15%] my-auto text-start pl-6">
+              <p className="w-[27%] my-auto text-start ">{user.mail}</p>
+              <p className="w-[17%] my-auto text-start ">
                 {user.user_role.user_role_name}
               </p>
-              <p className="w-[9%] my-auto pl-2">
+              <p className="w-[12%] my-auto">
                 {user.is_active == 1
                   ? "Activo"
                   : user.is_active == 0
                   ? "Inactivo"
                   : null}
               </p>
-              <p className="w-[18%] my-auto text-sm">{user.username}</p>
+              <p className="w-[13%] my-auto">{user.username}</p>
             </div>
           ))}
         </div>
