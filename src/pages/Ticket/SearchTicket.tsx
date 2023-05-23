@@ -2,9 +2,9 @@ import React, { useState, ChangeEvent, createContext } from "react";
 import LayoutBar from "../../components/Navigation/LayoutNavigation";
 import icono_alerta from "../../assets/icono_alerta.png";
 import TicketsPendientes from "../../components/SearchTicket/TicketsPendientes";
-import useTicket from "../../hooks/useTicket";
 import TicketsProceso from "../../components/SearchTicket/TicketsProceso";
 import TicketsFinalizados from "../../components/SearchTicket/TicketsFinalizados";
+import useTicket from "../../hooks/useTicket";
 
 type ticket = {
   status: string;

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import LayoutBar from "../../components/Navigation/LayoutNavigation";
 import { Link, useNavigate } from "react-router-dom";
-import icono_editar_blanco from "../../assets/icono_editar_blanco.png";
-import icono_borrar from "../../assets/icono_borrar.png";
+import icono_editar from "../../assets/icono_editar.png";
+import icono_delete from "../../assets/icono_delete.png";
 import useType from "../../hooks/useType";
 
 import Swal from "sweetalert2";
@@ -45,7 +45,7 @@ export default function Tipo() {
     MySwal.fire({
       html: (
         <>
-          <h1 className="text-2xl text-white">
+          <h1 className="text-2xl text-slate-700">
             Desea guardar los cambios?
           </h1>
         </>
@@ -54,13 +54,13 @@ export default function Tipo() {
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: "Guardar",
-      denyButtonText: "No guardar",
+      denyButtonText: `No guardar`,
       buttonsStyling: false,
       customClass: {
         confirmButton:
-          "bg-green-500 text-morado font-semibold rounded-2xl h-[40px] w-[120px] px-2 mr-3 hover:bg-green-400 hover:text-azul duration-250",
+          "bg-morado text-white rounded-2xl h-[40px] w-[140px] px-2 mr-1 border-2 border-morado hover:bg-transparent hover:text-morado duration-500",
         denyButton:
-          "bg-red-500 text-white font-semibold rounded-2xl h-[40px] w-[140px] px-2 ml-1 border-2 border-red-400 hover:bg-red-400 hover:text-azul duration-250",
+          "bg-red-400 text-white rounded-2xl h-[40px] w-[140px] px-2 ml-1 border-2 border-red-400 hover:bg-transparent hover:text-red-400 duration-500",
         popup: "bg-azul text-text rounded-3xl",
       },
     }).then(async (result) => {
@@ -84,19 +84,7 @@ export default function Tipo() {
           console.log("Datos actualizados: ", data_);
         }
       } else if (result.isDenied) {
-        MySwal.fire({
-          title: "¡Advertencia!",
-          text: "Los cambios no han sido guardados",
-          icon: "warning",
-          // confirmButtonText: "Aceptar",
-          showConfirmButton: false,
-          timer: 1500,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-            popup: "bg-azul text-text rounded-3xl text-white",
-          },
-        });
+        MySwal.fire("Los Cambios no han sido guardados", "", "info");
       }
     });
   }
@@ -131,52 +119,49 @@ export default function Tipo() {
         selectedType={selectedType}
       />
       <div className="flex justify-center items-center w-full">
-        <div className="flex flex-col w-[min(650px,90%)] max-h-[500px] rounded-md shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
+        <div className="flex flex-col w-[70%] max-h-[500px] rounded-md shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
           {/* Encabezado */}
-          <div className="flex w-full  h-[40px] items-center justify-center rounded-t-md bg-azul text-blanco">
-            <p className="font-bold text-xl">Configurar Tipo</p>
+          <div className="flex w-full  h-[7%] items-center justify-center rounded-t-md bg-azul text-blanco">
+            <p className="font-bold text-lg">Configurar Tipo</p>
           </div>
           {/* Contenedor Areas */}
-          <div className="flex flex-col items-center mt-5">
+          <div className="flex flex-col items-center pl-[8%] py-5  w-[100%]">
             {/* Encabezado tabla */}
 
-            <div className="w-[95%] border border-slate-200 rounded-md">
-              <div className=" flex flex-row w-full h-[35px] text-base font-medium bg-slate-200">
-                <div className="flex flex-row w-[30%] overflow-hidden overflow-ellipsis items-center justify-center">
+            <div className="w-[80%] h-[100%]">
+              <div className=" flex flex-row w-full h-[8%] text-sm font-medium ">
+                <div className="flex flex-row w-[30%] overflow-hidden overflow-ellipsis">
                   <p>Acciones</p>
-                  {/* <span className="text-red-600">*</span> */}
+                  <span className="text-red-600">*</span>
                 </div>
-                <div className="flex flex-row text-start w-[45%] overflow-hidden overflow-ellipsis items-center">
+                <div className="flex flex-row text-start w-[45%] overflow-hidden overflow-ellipsis">
                   <p>Tipo</p>
-                  {/* <span className="text-red-600">*</span> */}
+                  <span className="text-red-600">*</span>
                 </div>
-                <div className="flex flex-row text-start w-[25%] overflow-hidden overflow-ellipsis items-center justify-start pl-3">
+                <div className="flex flex-row text-start w-[25%] overflow-hidden overflow-ellipsis">
                   <p>Estado</p>
-                  {/* <span className="text-red-600">*</span> */}
+                  <span className="text-red-600">*</span>
                 </div>
               </div>
 
               <div className="overflow-y-scroll w-[100%] max-h-[350px]">
                 {/* Cuerpo de tabla */}
                 {types.map((types, i) => (
-                  <div
-                    key={types.type_id}
-                    className="flex flex-col w-full border-b border-slate-300"
-                  >
+                  <div key={types.type_id} className="flex flex-col w-full">
                     <div className="flex flex-row p-1">
                       {/* Nombre Area */}
                       {/* botones Editar y eliminar */}
                       <div className="w-[30%]">
                         <div className="flex flex-row">
-                          <div className="w-[50%] flex justify-end mr-[8%]">
+                          <div className="w-[50%]">
                             <button
-                              className="flex bg-green-500 text-white rounded  w-[40px] h-[25px] items-center justify-center duration-100 hover:scale-105 hover:bg-green-300 shadow-md "
+                              className="flex bg-green-400 text-white rounded  w-[50px] h-[30px] items-center justify-center duration-100 hover:scale-105 hover:bg-green-300 shadow-md "
                               onClick={() => {
                                 editFunc(types.type_id);
                               }}
                             >
                               <img
-                                src={icono_editar_blanco}
+                                src={icono_editar}
                                 className="w-[30%] aspect-square"
                                 alt=""
                               />
@@ -184,13 +169,13 @@ export default function Tipo() {
                           </div>
                           <div className="w-[50%]">
                             <button
-                              className="flex bg-red-500 text-white rounded w-[40px] h-[25px] items-center justify-center duration-100 hover:scale-105 hover:bg-red-400 shadow-md "
+                              className="flex bg-red-400 text-white rounded w-[50px] h-[30px] items-center justify-center duration-100 hover:scale-105 hover:bg-red-300 shadow-md "
                               onClick={() => {
                                 deleteFunc(types.type_id);
                               }}
                             >
                               <img
-                                src={icono_borrar}
+                                src={icono_delete}
                                 className="w-[40%] aspect-square"
                                 alt=""
                               />
@@ -200,7 +185,7 @@ export default function Tipo() {
                       </div>
                       {/* Nombre de producto */}
                       <div className="flex justify-start  pl-2 w-[50%] text-xs text-start ">
-                        <p className="text-base">{types.type_name}</p>
+                        <p>{types.type_name}</p>
                       </div>
                       {/* Estado  */}
                       <div className="flex justify-start w-[20%] text-sm items-center">
@@ -223,14 +208,15 @@ export default function Tipo() {
 
                       {/* border */}
                     </div>
+                    <div className="w-[92%]  border-morado border-t-[1px] shadow-md"></div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <div className="flex justify-center text-sm font-medium text-morado my-4 w-[50%] mx-auto">
+          <div className="flex  justify-center text-sm font-medium text-morado mb-10 ">
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco hover:text-bold text-base font-semibold"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
               onClick={() => {
                 addFunc();
               }}
@@ -238,7 +224,7 @@ export default function Tipo() {
               Agregar
             </button>
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco hover:text-bold text-base font-semibold"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
               onClick={() => history("/administracion/configuraciones")}
             >
               Salir{" "}

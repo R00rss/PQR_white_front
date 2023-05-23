@@ -172,53 +172,48 @@ export default function Incidencia() {
         selectedIncidence={selectedIncidence}
       />
       <div className="flex justify-center items-center w-full">
-        <div className="flex flex-col w-[min(950px,80%)] rounded-md shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] items-center">
-          <div className="h-[35px] bg-azul w-full items-center justify-center flex rounded-t-md">
-            <p className="text-xl text-white font-bold">
-              Configurar Incidencias
-            </p>
-          </div>
-          {/* Busqueda */}
-          <div className=" flex flex-row w-[85%] mt-2 justify-between">
-            <div className="flex flex-row w-[80%] p-3">
+        <div className="flex flex-col w-[95%] max-h-[500px] rounded-md shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] items-center">
+          <div className=" flex flex-row">
+            <div className="flex flex-row w-[50%] p-3">
               <p className="text-gris text-base my-auto m-2">Buscar</p>
               <input
-                className="w-[90%] rounded-md border-gris-claro border focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] px-2"
+                className="w-[70%] rounded-md border-gris-claro border focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
                 placeholder="buscar incidencia ..."
                 type="text"
                 value={search}
                 onChange={onSearchChange}
               ></input>
             </div>
-            <div className="flex w-[50%] justify-end items-center text-sm font-medium text-morado">
+            <div className="flex w-[50%] justify-center  items-center text-sm font-medium text-morado ">
               <button
-                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-150 hover:bg-morado hover:text-blanco hover:font-bold"
+                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
                 onClick={addFunc}
               >
                 Agregar
               </button>
               <button
-                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-150 hover:bg-morado hover:text-blanco hover:font-bold"
+                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
                 onClick={() => history("/administracion/configuraciones")}
               >
                 Salir{" "}
               </button>
             </div>
           </div>
-          {/* Tabla */}
 
-          <div className="flex flex-col w-[95%] justify-center mt-4 border border-slate-300 rounded-md">
+          <div className="flex flex-col w-[70%] justify-center">
             {/* Encabezado */}
-            <div className="flex w-full h-[30px] items-center justify-center rounded-t-md bg-slate-300 text-slate-800">
+            <div className="flex w-full  h-[10%] items-center justify-center rounded-t-md bg-azul text-blanco">
+              {/* <p className="font-bold text-lg">Configurar Productos</p> */}
+
               <div className=" flex flex-row w-full h-[10%] text-xs font-medium justify-center items-center">
-                <div className="pl-2 flex flex-row w-[35%] overflow-hidden overflow-ellipsis items-center justify-start ">
-                  <p className="text-base font-semibold pl-4">Producto</p>
+                <div className="pl-2 flex flex-row w-[35%] overflow-hidden overflow-ellipsis">
+                  <p>Producto</p>
                 </div>
-                <div className="pl-2 flex flex-row w-[35%] overflow-hidden overflow-ellipsis items-center justify-start">
-                  <p className="text-base font-semibold">Incidencia</p>
+                <div className="pl-2 flex flex-row w-[35%] overflow-hidden overflow-ellipsis">
+                  <p>Incidencia</p>
                 </div>
-                <div className="pl-2 flex flex-row text-start w-[30%] overflow-hidden overflow-ellipsis items-center justify-center">
-                  <p className="text-base font-semibold">Estado</p>
+                <div className="pl-2 flex flex-row text-start w-[30%] overflow-hidden overflow-ellipsis">
+                  <p>Estado</p>
                 </div>
               </div>
             </div>
@@ -228,7 +223,7 @@ export default function Incidencia() {
               {filteredIncidence().map((incidencia, i) => (
                 <div
                   key={incidencia.incidence_id}
-                  className="flex flex-col w-full pt-2 pb-4  border-slate-300 border-b"
+                  className="flex flex-col w-full pt-2 pb-4"
                 >
                   <div className="flex flex-row p-1">
                     {/* Nombre Area */}
@@ -236,17 +231,15 @@ export default function Incidencia() {
 
                     {/* Nombre de producto */}
                     <div className="pl-2 flex justify-start w-[35%] text-xs text-start ">
-                      <p className="text-base">
-                        {incidencia.product.product_name}
-                      </p>
+                      <p>{incidencia.product.product_name}</p>
                     </div>
                     <div className="pl-2 flex justify-start w-[35%] text-xs text-start ">
-                      <p className="text-base">{incidencia.incidence_name}</p>
+                      <p>{incidencia.incidence_name}</p>
                     </div>
                     {/* Estado  */}
-                    <div className="pl-2 flex justify-center w-[30%] text-sm items-center ">
+                    <div className="pl-2 flex justify-start w-[30%] text-sm items-center">
                       <div
-                        className={`relative inline-block w-10 rounded-full items-center justify-center h-4 cursor-pointer transition-colors duration-300 ${
+                        className={`relative inline-block w-8 rounded-full items-center h-3 cursor-pointer transition-colors duration-300 ${
                           isActive === incidencia.is_active
                             ? "bg-green-700 justify-end "
                             : "bg-red-700 "
@@ -255,30 +248,30 @@ export default function Incidencia() {
                         onClick={() => editState(incidencia.incidence_id)}
                       >
                         {incidencia.is_active == 1 ? (
-                          <div className="transition-transform duration-300 transform translate-x-[27px] w-[25%] aspect-square rounded-full bg-white mr-[1px] translate-y-1/4"></div>
+                          <div className="transition-transform duration-300 transform translate-x-[22px] w-[25%] aspect-square rounded-full bg-white mr-[2px] translate-y-1/4"></div>
                         ) : (
-                          <div className="transition-transform duration-300 transform translate-x-[0%] w-[25%] aspect-square rounded-full bg-white ml-[3px] translate-y-1/4"></div>
+                          <div className="transition-transform duration-300 transform translate-x-[0%] w-[25%] aspect-square rounded-full bg-white ml-[2px] translate-y-1/4"></div>
                         )}
                       </div>
                     </div>
 
                     {/* border */}
                   </div>
-                  {/* <div className="w-[100%] border-slate-300 border-b shadow-md"></div> */}
+                  <div className="w-[100%]  border-gray-400 border-t-[1px] shadow-md"></div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex flex-row items-center my-4 w-[35%] justify-between gap-8">
+          <div className="flex flex-row   items-center my-4">
             <button
-              className="w-[50%] px-[5%] h-[35px] text-morado font-semibold rounded-md border border-morado hover:text-white hover:bg-morado hover:scale-105 hover:duration-200"
+              className="w-[85px] px-[5%] h-[35px] text-morado font-semibold rounded-md border border-morado hover:text-white hover:bg-morado hover:scale-105 hover:duration-200"
               onClick={prevPage}
             >
               Atras
             </button>
             <button
-              className=" w-[50%] px-[5%] h-[35px] text-morado font-semibold rounded-md border border-morado hover:text-white hover:bg-morado hover:scale-105 hover:duration-200"
+              className=" w-[85px] px-[5%] h-[35px] text-morado font-semibold rounded-md border border-morado hover:text-white hover:bg-morado hover:scale-105 hover:duration-200"
               onClick={nextPage}
             >
               Siguiente

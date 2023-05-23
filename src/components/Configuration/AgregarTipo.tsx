@@ -98,16 +98,14 @@ function PopEditarTipo({
         console.log("Datos actualizados: ", data_);
 
         MySwal.fire({
-          title: "!Tipo actualizado correctamente¡",
+          title: "!Datos Cambiados Correctamente¡",
           //text: "No ha rellenado todos los campos",
           icon: "success",
-          // confirmButtonText: "Aceptar",
+          confirmButtonText: "Aceptar",
           buttonsStyling: false,
-          showConfirmButton: false,
-          timer: 1500,
           customClass: {
             confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-            popup: "bg-azul rounded-3xl text-white",
+            popup: "bg-azul text-text rounded-3xl",
           },
         }).finally(() => {
           onClosePopUp();
@@ -131,10 +129,8 @@ function PopEditarTipo({
               {/* fila 2 */}
               <div className="flex flex-row py-4 w-full">
                 <div className="flex flex-row w-[100%]">
-                  <p className="text-base font-semibold text-morado">
-                    Nombre Tipo
-                  </p>
-                  {/* <span className="text-red-600">*</span> */}
+                  <p className="text-sm font-medium">Nombre Tipo</p>
+                  <span className="text-red-600">*</span>
                 </div>
               </div>
               <div className="flex flex-row w-full">
@@ -149,7 +145,7 @@ function PopEditarTipo({
                     value={type_info.type_name}
                     required
                     type="text"
-                    className="pl-2 py-1 w-full text-sm font-light border border-azul rounded focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
+                    className="pl-2 py-1 w-full text-sm font-light border border-azul rounded focus:border-red-500"
                   />
                 </div>
 
@@ -222,18 +218,18 @@ function PopAgregarTipo({ onClosePopUp, getData }: PopUpAddTypeProps) {
           });
         } else {
           MySwal.fire({
-            title: "¡Tipo ingresado con éxito!",
+            title: "¡Producto ingresado con exito!",
             // text: "Credenciales inválidas",
             icon: "success",
             showConfirmButton: false,
             timer: 1500,
             // confirmButtonText: "Aceptar",
             // buttonsStyling: false,
-            customClass: {
-              confirmButton:
-                "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-              popup: "bg-azul text-text rounded-3xl text-white",
-            },
+            // customClass: {
+            //   confirmButton:
+            //     "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
+            //   popup: "bg-azul text-text rounded-3xl",
+            // },
           }).finally(() => {
             onClosePopUp();
             getData();
@@ -272,8 +268,8 @@ function PopAgregarTipo({ onClosePopUp, getData }: PopUpAddTypeProps) {
 
             {/* fila 2 */}
             <div className="flex flex-row py-4">
-              <p className="text-base font-semibold text-morado">Nuevo Tipo</p>
-              {/* <span className="text-red-600">*</span> */}
+              <p className="text-sm font-medium">Nuevo Tipo</p>
+              <span className="text-red-600">*</span>
             </div>
             {/* fila 3 */}
             <div>
@@ -287,19 +283,19 @@ function PopAgregarTipo({ onClosePopUp, getData }: PopUpAddTypeProps) {
                 required
                 value={type_info.type_name}
                 type="text"
-                className="w-full border border-azul rounded focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] px-2"
+                className="w-full border border-azul rounded focus:border-red-500"
               />
             </div>
             <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
               <button
                 type="submit"
-                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco text-base font-semibold"
+                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
               >
                 Agregar
               </button>
               <button
                 type="button"
-                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco text-base font-semibold"
+                className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-morado hover:text-blanco"
                 onClick={onClosePopUp}
               >
                 Salir{" "}
@@ -326,16 +322,14 @@ function PopDeleteTipo({
       console.log("Datos actualizados: ", data_);
 
       MySwal.fire({
-        title: "¡Tipo Eliminado correctamente !",
+        title: "¡ Producto Eliminado correctamente !",
         //text: "No ha rellenado todos los campos",
         icon: "success",
-        // confirmButtonText: "Aceptar",
+        confirmButtonText: "Aceptar",
         buttonsStyling: false,
-        showConfirmButton: false,
-        timer: 1500,
         customClass: {
           confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-white rounded-3xl",
+          popup: "bg-blanco text-text rounded-3xl",
         },
       }).finally(() => {
         onClosePopUp();
@@ -365,7 +359,7 @@ function PopDeleteTipo({
 
           <div className="flex justify-center text-sm font-medium text-morado pb-2 pt-5">
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-morado hover:border-green-400 hover:font-bold hover:text-base"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-green-400 hover:text-blanco"
               onClick={() => {
                 deleteArea();
               }}
@@ -373,7 +367,7 @@ function PopDeleteTipo({
               Confirmar
             </button>
             <button
-              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-morado hover:border-red-400 hover:font-bold hover:text-base"
+              className="w-[90px] h-[35px] mx-[5%] border border-morado rounded-md duration-100 hover:bg-red-400 hover:text-blanco"
               onClick={onClosePopUp}
             >
               Cancelar{" "}

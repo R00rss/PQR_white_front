@@ -403,9 +403,9 @@ export default function BusquedaCatalogo({
           <div className="flex flex-row w-1/3 h-full gap-4 items-center justify-center">
             <p className="text-slate-700 pl-2">Buscar</p>
             <input
-              className=" w-full h-[40%] border border-slate-400 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] pl-2"
+              className=" w-full h-[40%] border border-slate-400 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]"
               onChange={onSearchChange}
-              placeholder="Buscar"
+              placeholder=" Buscar...."
             />
             {/* <img src={icono_descargar} className="h-[35%] w-[5%]" /> */}
           </div>

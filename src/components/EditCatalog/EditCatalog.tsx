@@ -44,7 +44,6 @@ interface EditCatalogProps {
   showPopUp: boolean;
   onCLosePopUp: () => void;
   catalogData: Catalog;
-  getData: Function;
 }
 
 enum TypeTime {
@@ -95,7 +94,6 @@ export default function EditCatalog({
   showPopUp,
   onCLosePopUp,
   catalogData,
-  getData,
 }: EditCatalogProps) {
   const [isSelectedArea, setIsSelectedArea] = useState("");
   const [isSelectedTipoSla, setIsSelectedTipoSla] = useState("");
@@ -114,11 +112,6 @@ export default function EditCatalog({
     orq_id: DEFAULT_OPTION,
     catalog_id: catalogData.catalog_id,
   });
-
-  /* Flags */
-  const flag_users_by_area = users_by_area.length > 0;
-  const flag_isSelectedArea = isSelectedArea !== DEFAULT_OPTION;
-  const flag_isSelectedTipoSla = isSelectedTipoSla !== DEFAULT_OPTION;
 
   function handleSelectChangeArea(event: React.ChangeEvent<HTMLSelectElement>) {
     console.log("event.target.value", event.target.value);
@@ -189,55 +182,6 @@ export default function EditCatalog({
       event.currentTarget.reportValidity();
       return;
     }
-    if (!flag_users_by_area) {
-      MySwal.fire({
-        title: "Alerta!",
-        text: "No hay orquestadores disponibles",
-        icon: "warning",
-        // confirmButtonText: "Aceptar",
-        showConfirmButton: false,
-        buttonsStyling: false,
-        timer: 1500,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl text-white",
-        },
-      });
-      return;
-    }
-    if (!flag_isSelectedArea) {
-      MySwal.fire({
-        title: "Alerta!",
-        text: "Debe seleccionar un área",
-        icon: "warning",
-        // confirmButtonText: "Aceptar",
-        buttonsStyling: false,
-        showConfirmButton: false,
-        timer: 1500,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl text-white",
-        },
-      });
-      return;
-    }
-    if (!flag_isSelectedTipoSla) {
-      MySwal.fire({
-        title: "Alerta!",
-        text: "Debe seleccionar un tipo de tiempo",
-        icon: "warning",
-        // confirmButtonText: "Aceptar",
-        buttonsStyling: false,
-        showConfirmButton: false,
-        timer: 1500,
-        customClass: {
-          confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-          popup: "bg-azul text-text rounded-3xl text-white",
-        },
-      });
-      return;
-    }
-
     if (
       catalog_update.area_id === DEFAULT_OPTION ||
       catalog_update.orq_id === DEFAULT_OPTION ||
@@ -306,7 +250,7 @@ export default function EditCatalog({
       timer: 1500,
     }).finally(() => {
       onCLosePopUp(); //TODO REFACTORIZAR ESTO
-      getData();
+      //TODO  getData();
     });
   }
 

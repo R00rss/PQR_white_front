@@ -11,7 +11,7 @@ interface cargo {
 
 interface parameters {
   incidence_id: string;
-  product_i: string;
+  product_id: string;
 }
 export async function get_info_by_catalog(
   parameters: parameters,
@@ -99,11 +99,15 @@ export async function get_position_for_admin(
 }
 
 
-interface parameters {
+interface getParameters {
   incidence_id: string;
   type_id: string;
 }
-export async function get_catalog_by_I_and_t(parameters: parameters, token: string | null = get_token()) {
+
+
+
+
+export async function get_catalog_by_I_and_t(parameters: getParameters, token: string | null = get_token()) {
   
     try {
     if (!token) return null;
@@ -125,6 +129,7 @@ export async function get_catalog_by_I_and_t(parameters: parameters, token: stri
     return null;
   }
 }
+
 
 
 ///////////////// UPDATE CATALOG ///////////////////////
@@ -235,7 +240,6 @@ export async function get_catalog_by_type(type_id: string, token: string | null 
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    //body: JSON.stringify({...parameters}),
   });
   if (res.status == 200) {
     return res;
@@ -268,9 +272,30 @@ export async function get_products_by_type(type_id: string, token: string | null
   console.log(e);
   return null;
 }
-
-
-
 }
+
+
+export async function get_incidence_by_catalog(type_id: string, product_id: string, token: string | null = get_token()) {
+  
+  try {
+  if (!token) return null;
+  const res = await fetch(`/api/catalog/incidence/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({type_id,product_id}),
+  });
+  if (res.status == 200) {
+    return res;
+  }
+  return null;
+} catch (e) {
+  console.log(e);
+  return null;
+}
+}
+
 
 

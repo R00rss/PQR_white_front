@@ -14,8 +14,6 @@ interface FormValues {
   state: string;
 }
 
-const DEFAULT_OPTION = "Ingrese una opción";
-
 export default function Report() {
   const [isSelectedTipoReporte, setIsSelectedTipoReporte] = useState("");
   const [isSelectedFiltro, setIsSelectedFiltro] = useState("");
@@ -133,10 +131,11 @@ export default function Report() {
   const [showPopUp, setShowPopUp] = useState(false);
   const handleShowPopUp = () => setShowPopUp(true);
   const handleClosePopUp = () => setShowPopUp(false);
+  // w-[80%] sm:w-[85%] md:w-[75%] lg:w-[60%] xl:w-[50%] 
   return (
     <LayoutBar opcionSeleccionada="reportes">
-      <div className="flex flex-col rounded-md w-[min(550px,90%)] shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
-        <div className="w-full h-[43px] bg-azul rounded-t-md flex items-center justify-center">
+      <div className="flex flex-col rounded-md w-[min(600px,90%)] shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
+        <div className="w-full h-[10%] bg-azul rounded-t-md flex items-center justify-center">
           <p className="text-white text-2xl font-bold ">Reportes</p>
         </div>
 
@@ -153,12 +152,10 @@ export default function Report() {
             <select
               name="tipo"
               value={formValues.tipo}
-              className="w-full h-[26px] rounded border-gris border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] font-bold text-morado"
+              className="w-full h-[26px] rounded border-gris border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] appearance-none font-bold"
               onChange={handleSelectOnChangeTipo}
             >
-              <option value={DEFAULT_OPTION} className="text-center">
-                {DEFAULT_OPTION}
-              </option>
+              <option value="" className="text-center"></option>
               <option value="1" className="text-center">
                 Histórico
               </option>
@@ -178,12 +175,10 @@ export default function Report() {
             <select
               name="filtro"
               value={formValues.filtro}
-              className="w-full h-[26px] rounded border-gris border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] font-bold text-morado"
+              className="w-full h-[26px] rounded border-gris border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] appearance-none font-bold"
               onChange={handleSelectOnChangeFiltro}
             >
-              <option value={DEFAULT_OPTION} className="text-center">
-                {DEFAULT_OPTION}
-              </option>
+              <option value="" className="text-center"></option>
               <option value="1" className="text-center">
                 Fechas
               </option>
@@ -300,18 +295,16 @@ export default function Report() {
             <div className=" flex flex-col w-full pt-2">
               <div className="flex flex-row gap-1">
                 <p className="text-left mb-1 text-gris font-semibold">
-                  Estado del ticket
+                  Estado ticket
                 </p>
               </div>
               <select
                 name="state"
                 value={formValues.state}
-                className="w-full h-[26px] rounded border-gris border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] font-bold text-morado"
+                className="w-full h-[26px] rounded border-gris border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600 focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)] appearance-none font-bold"
                 onChange={handleSelectOnChangeState}
               >
-                <option className="text-center" value={DEFAULT_OPTION}>
-                  {DEFAULT_OPTION}
-                </option>
+                <option value="" className="text-center"></option>
                 <option value="1" className="text-center">
                   Abierto
                 </option>
@@ -329,7 +322,7 @@ export default function Report() {
 
             {/* Botones */}
 
-            <div className="flex flex-row w-[80%] mx-auto my-6 h-7">
+            <div className="flex flex-row w-2/3 mx-auto my-6">
               <div className=" flex w-full text-center justify-center gap-4 text-base font-semibold">
                 <button
                   className="w-2/4 border border-morado rounded-[4px] hover:bg-morado hover:text-white duration-200 text-morado text-sm sm:text-base "

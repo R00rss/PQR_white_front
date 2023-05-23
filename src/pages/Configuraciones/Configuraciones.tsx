@@ -11,7 +11,7 @@ export default function Configuraciones() {
           </p>
         </div>
         <div className="h-[90%]">
-          <ul className="flex flex-col w-[80%] h-full mx-auto text-start justify-center gap-4 text-gris font-bold text-lg">
+          <ul className="flex flex-col w-[70%] h-full mx-auto text-start justify-center gap-4 text-gris font-bold text-lg ">
             {/* <Link
               to={"/administracion/configuraciones/ticket_max"}
               className="hover:text-morado hover:font-black duration-300 hover:scale-105 border-b border-slate-300 w-full"
@@ -19,44 +19,27 @@ export default function Configuraciones() {
               Máximo de archivos por tickets 
             </Link> */}
 
-            {/* <Link to={"/administracion/configuraciones/sla"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">SLA</Link> */}
-
-            <Link
-              to={"/administracion/configuraciones/areas"}
-              className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300"
-            >
-              Configurar áreas
-            </Link>
-            <Link
-              to={"/administracion/configuraciones/cargos"}
-              className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300"
-            >
-              Configurar cargos
-            </Link>
-            <Link
-              to={"/administracion/configuraciones/productos"}
-              className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300"
-            >
-              Configurar productos
-            </Link>
-            <Link
-              to={"/administracion/configuraciones/tipo"}
-              className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300"
-            >
-              Configurar tipo
-            </Link>
-            <Link
-              to={"/administracion/configuraciones/incidencias"}
-              className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300"
-            >
-              Configurar incidencias
-            </Link>
-            <Link
-              to={"/administracion/configuraciones/catalogo"}
-              className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300"
-            >
-              Catálogo
-            </Link>
+            
+              <Link to={"/administracion/configuraciones/sla"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">SLA</Link>
+            
+              <Link to={"/administracion/configuraciones/areas"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">
+                Configurar áreas
+              </Link>
+              <Link to={"/administracion/configuraciones/cargos"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">
+                Configurar cargos
+              </Link>
+              <Link to={"/administracion/configuraciones/productos"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">
+                Configurar productos
+              </Link>
+              <Link to={"/administracion/configuraciones/tipo"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">
+                Configurar tipo
+              </Link>
+              <Link to={"/administracion/configuraciones/incidencias"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">
+                Configurar incidencias
+              </Link>
+              <Link to={"/administracion/configuraciones/catalogo"} className="hover:text-morado hover:font-black duration-200 hover:scale-105 border-b border-slate-300">
+                Catálogo
+              </Link>
           </ul>
         </div>
       </div>

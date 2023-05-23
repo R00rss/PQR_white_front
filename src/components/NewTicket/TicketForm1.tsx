@@ -115,36 +115,93 @@ export default function TicketForm1({
   }, [data_received_ticket, data_to_send]);
 
   function nextFunc() {
-    if (data_received_ticket.client_id != "") {
-      // en el caso de que exista el cliente en la base de datos
-      console.log("El Cliente Existe en la base de datos ");
-      setTicketInfo({
-        ...ticketInfo,
-        client_id: data_received_ticket.client_id,
-      });
-      console.log(
-        "Informacion de cliente en la base de datos",
-        data_received_ticket
-      );
-      onNext();
+    //verificacion que estan validados todos los campos
+    console.log("informacion Enviada: ", data_received_ticket, data_to_send);
+
+    if (
+      (data_to_send.tipo,
+      data_to_send.valor,
+      data_received_ticket.name,
+      data_received_ticket.phone,
+      data_received_ticket.email != undefined)
+    ) {
+      if (
+        (is_Valid.identification,
+        is_Valid.client_name,
+        is_Valid.client_mail,
+        is_Valid.client_phone === true)
+      ) {
+        // Valida que es nuevo cliente por medio de si existe una cedula recibida o no
+        if (data_received_ticket.client_id != "") {
+          // en el caso de que exista el cliente en la base de datos
+          console.log("El Cliente Existe en la base de datos ");
+          setTicketInfo({
+            ...ticketInfo,
+            client_id: data_received_ticket.client_id,
+            is_new_client: is_new_client,
+          });
+          console.log("Informacion de cliente en la base de datos", ticketInfo);
+          onNext();
+        } else {
+          // En el caso que se tenga que crear un cliente para este ticket
+
+          console.log("Es Cliente nuevo: ");
+
+          //console.log(is_Valid);
+          console.log(data_received_ticket);
+          setTicketInfo({
+            ...ticketInfo,
+
+            new_identification: data_to_send.valor,
+            client_id: data_received_ticket.client_id,
+            is_new_client: is_new_client,
+          });
+
+          onNext();
+        }
+      } else {
+        MySwal.fire({
+          html: (
+            <>
+              <h1 className="text-2xl text-slate-700">
+                La informacion no es valida!:
+              </h1>
+            </>
+          ),
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Entendido",
+          buttonsStyling: false,
+
+          customClass: {
+            confirmButton:
+              "bg-morado text-white rounded-2xl h-[40px] w-[140px] px-2 mr-1 border-2 border-morado hover:bg-transparent hover:text-morado duration-500",
+            denyButton:
+              "bg-red-400 text-white rounded-2xl h-[40px] w-[140px] px-2 ml-1 border-2 border-red-400 hover:bg-transparent hover:text-red-400 duration-500",
+            popup: "bg-azul text-text rounded-3xl",
+          },
+        });
+      }
     } else {
-      // En el caso que se tenga que crear un cliente para este ticket
-
-      console.log("Es Cliente nuevo: ");
-
       MySwal.fire({
         html: (
           <>
             <h1 className="text-2xl text-slate-700">
-              No se ha encontrado el cliente:
+              No se ha llenado todos los campos!:
             </h1>
           </>
         ),
-        icon: "info",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
         showDenyButton: false,
         showCancelButton: false,
         confirmButtonText: "Entendido",
         buttonsStyling: false,
+
         customClass: {
           confirmButton:
             "bg-morado text-white rounded-2xl h-[40px] w-[140px] px-2 mr-1 border-2 border-morado hover:bg-transparent hover:text-morado duration-500",
@@ -153,28 +210,12 @@ export default function TicketForm1({
           popup: "bg-azul text-text rounded-3xl",
         },
       });
-      //console.log(is_Valid);
-      console.log(data_received_ticket);
-
-      onNext();
     }
-
-    setTicketInfo({
-      ...ticketInfo,
-      amount: data_to_send.valor,
-      client_id: data_received_ticket.client_id,
-    });
-    onNext();
   }
-  console.log(is_new_client);
-
   const isEmptyIdentificacion = useMemo(
     () => data_to_send.valor === "",
     [data_to_send.valor]
   );
-  console.log(isEmptyIdentificacion);
-  /////////////////////////////////////////////
-
   async function handleSelectChangeTipoIdentificacion(
     event: React.ChangeEvent<HTMLSelectElement>
   ) {
@@ -267,7 +308,7 @@ export default function TicketForm1({
           html: (
             <>
               <h1 className="text-2xl text-slate-700">
-                El numero de identificacion no es invalido{" "}
+                El numero de identificacion no es invalido
               </h1>
             </>
           ),
@@ -287,31 +328,34 @@ export default function TicketForm1({
       }
     }
   }
-  useEffect(() => {
-    if (is_new_client) {
-      MySwal.fire({
-        html: (
-          <>
-            <h1 className="text-2xl text-slate-700">
-              No se ha encontrado el cliente
-            </h1>
-          </>
-        ),
-        icon: "info",
-        showDenyButton: false,
-        showCancelButton: false,
-        confirmButtonText: "Entendido",
-        buttonsStyling: false,
-        customClass: {
-          confirmButton:
-            "bg-morado text-white rounded-2xl h-[40px] w-[140px] px-2 mr-1 border-2 border-morado hover:bg-transparent hover:text-morado duration-500",
-          denyButton:
-            "bg-red-400 text-white rounded-2xl h-[40px] w-[140px] px-2 ml-1 border-2 border-red-400 hover:bg-transparent hover:text-red-400 duration-500",
-          popup: "bg-azul text-text rounded-3xl",
-        },
-      });
-    }
-  }, [is_new_client]);
+
+  /// esto estaq comentado porque al intentar ir al la ruta ce creacion de nuevo ticket sin sesion sale este mensaje en vez de el de fin de sesion
+
+  // useEffect(() => {
+  //   if (is_new_client) {
+  //     MySwal.fire({
+  //       html: (
+  //         <>
+  //           <h1 className="text-2xl text-slate-700">
+  //             No se ha encontrado el cliente
+  //           </h1>
+  //         </>
+  //       ),
+  //       icon: "info",
+  //       showDenyButton: false,
+  //       showCancelButton: false,
+  //       confirmButtonText: "Entendido",
+  //       buttonsStyling: false,
+  //       customClass: {
+  //         confirmButton:
+  //           "bg-morado text-white rounded-2xl h-[40px] w-[140px] px-2 mr-1 border-2 border-morado hover:bg-transparent hover:text-morado duration-500",
+  //         denyButton:
+  //           "bg-red-400 text-white rounded-2xl h-[40px] w-[140px] px-2 ml-1 border-2 border-red-400 hover:bg-transparent hover:text-red-400 duration-500",
+  //         popup: "bg-azul text-text rounded-3xl",
+  //       },
+  //     });
+  //   }
+  // }, [is_new_client]);
 
   useEffect(() => {
     console.log(client);
@@ -362,7 +406,7 @@ export default function TicketForm1({
               pattern={validators.pattern}
               maxLength={validators.maxLenght}
               max={validators.maxLenght}
-              className={`w-5/6 h-[26px] rounded-s-md border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600  focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]  ${
+              className={`px-2 w-5/6 h-[26px] rounded-s-md border bg-transparent text-left focus:outline-none focus:ring-1 focus:ring-blue-600  focus:shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]  ${
                 is_Valid.identification ? " border-gris" : "border-red-500"
               }`}
               onChange={handleInputChangeIdentificacion}
@@ -440,7 +484,9 @@ export default function TicketForm1({
 
       <div
         className="my-4 h-[33px] w-1/4 border border-morado mx-auto rounded-md bg-blanco text-morado font-bold hover:bg-morado hover:scale-105 duration-[250ms] hover:text-white cursor-pointer flex items-center justify-center "
-        onClick={nextFunc}
+        onClick={() => {
+          nextFunc();
+        }}
       >
         <button>Siguiente</button>
       </div>

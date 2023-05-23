@@ -27,18 +27,9 @@ type SidebarProps = {
   boptions: IButtonOptions;
 };
 
-const MODULES_OPTIONS = ["Tickets", "Dashboard", "Administración", "Reportes"];
-const ROLES_USER = {
-  Super_admin: MODULES_OPTIONS,
-  Admin: ["Administración"],
-  Supervisor: ["Tickets", "Dashboard", "Reportes"],
-  Orquestador: ["Tickets", "Dashboard"],
-  Ingresador: ["Tickets"],
-};
 export default function Sidebar({ boptions }: SidebarProps) {
   const history = useNavigate();
   const { user_info } = useContext(JWTContext);
-
   console.log(user_info);
   console.log(boptions);
   /* Popup */
@@ -50,16 +41,15 @@ export default function Sidebar({ boptions }: SidebarProps) {
     remove_token();
 
     MySwal.fire({
-      title: "!Sesión cerrada con éxito¡",
+      title: "!Sesion cerrada con exito¡",
       text: "Hasta pronto....",
       icon: "success",
       timer: 2000,
-      // confirmButtonText: "Aceptar",
-      showConfirmButton: false,
+      confirmButtonText: "Aceptar",
       buttonsStyling: false,
       customClass: {
         confirmButton: "bg-azul text-white rounded-2xl h-[40px] w-[100px]",
-        popup: "bg-azul text-xl rounded-3xl text-white",
+        popup: "bg-azul text-text rounded-3xl",
       },
     }).finally(() => {
       history("/");
@@ -103,78 +93,78 @@ export default function Sidebar({ boptions }: SidebarProps) {
     }
   }, []);
 
-  if (!user_info) {
-    return <></>;
-  }
-  const valid_modules =
-    ROLES_USER[user_info.user_role as keyof typeof ROLES_USER];
-
   return (
-    <div className="flex flex-col justify-start h-[600px] p-3 bg-white w-64 rounded-2xl gap-1 mx-[10%] mt-5 relative shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
-      <div className="flex items-center justify-center">
-        <img src={logo_kmb} className="w-20 h-16" />
-      </div>
-      <img
-        src={icono_reportes}
-        alt=""
-        className="rounded-full bg-gris h-20 w-20 mt-6 mx-auto"
-        onClick={handleShowPopUp}
-      />
-      <ViewUser showPopUp={showPopUp} onCLosePopUp={handleClosePopUp} />
-      <p className="mx-auto text-sm">Bienvenido de vuelta</p>
-      <p className="mx-auto text-sm font-semibold">{user_info.fullname}</p>
-      <div className="flex flex-col my-16 justify-center">
-        <ul>
-          {boptions &&
-            Object.keys(boptions).map((key) => {
-              const { name, imageURL, path } = boptions[key];
-              if (!valid_modules.includes(name)) return <></>;
-              return (
-                <li
-                  data-set-href={`${path}`}
-                  className="rounded-lg  text-base hover:scale-105 duration-500"
-                  key={key}
-                >
-                  <Link
-                    to={path}
-                    className="flex items-center gap-2 p-2 ml-[20%]"
+    <>
+      {user_info && (
+        <div className="flex flex-col justify-start h-[600px] p-3 bg-white w-64 rounded-2xl gap-1 mx-[10%] mt-5 relative shadow-[0px_0px_15px_-3px_rgba(0,0,0,0.4)]">
+          <div className="flex items-center justify-center">
+            <img src={logo_kmb} className="w-20 h-16" />
+          </div>
+          <img
+            src={icono_reportes}
+            alt=""
+            className="rounded-full bg-gris h-20 w-20 mt-6 mx-auto"
+            onClick={handleShowPopUp}
+          />
+          <ViewUser showPopUp={showPopUp} onCLosePopUp={handleClosePopUp} />
+          <p className="mx-auto text-sm">Bienvenido de vuelta</p>
+          <p className="mx-auto text-sm font-semibold">{user_info.fullname}</p>
+          <div className="flex flex-col my-16 justify-center">
+            <ul>
+              {boptions &&
+                Object.keys(boptions).map((key) => {
+                  const { name, imageURL, path } = boptions[key];
+                  return (
+                    <li
+                      data-set-href={`${path}`}
+                      className="rounded-lg  text-base hover:scale-105 duration-500"
+                      key={key}
+                    >
+                      <Link
+                        to={path}
+                        className="flex items-center gap-2 p-2 ml-[20%]"
+                      >
+                        <div className="flex flex-row w-[80%]">
+                          <div className="flex items-center w-[20%]">
+                            <img
+                              src={imageURL}
+                              alt={`image_${name}`}
+                              className="w-4 h-4"
+                            />
+                          </div>
+                          <div className="w-[80%]">
+                            <span className="">{name}</span>
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+            </ul>
+            <ul className="flex  items-center gap-2  mt-20 font-semibold cursor-pointer hover:scale-105 duration-200  hover:font-bold">
+              <li className="flex w-[80%] flex-row text-sm text-gris  ml-[20%]">
+                <div className="flex justify-center items-center w-[20%] aspect-square ">
+                  <img
+                    src={icono_cerrar_sesion}
+                    className="w-4 aspect-square"
+                  />
+                </div>
+                <div className="flex items-center w-[80%] ">
+                  <span
+                    className=" hover:text-morado hover:font-extrabold"
+                    onClick={logout}
                   >
-                    <div className="flex flex-row w-[80%]">
-                      <div className="flex items-center w-[20%]">
-                        <img
-                          src={imageURL}
-                          alt={`image_${name}`}
-                          className="w-4 h-4"
-                        />
-                      </div>
-                      <div className="w-[80%]">
-                        <span className="">{name}</span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-        </ul>
-        <ul className="flex  items-center gap-2  mt-20 font-semibold cursor-pointer hover:scale-105 duration-200  hover:font-bold">
-          <li className="flex w-[80%] flex-row text-sm text-gris  ml-[20%]">
-            <div className="flex justify-center items-center w-[20%] aspect-square ">
-              <img src={icono_cerrar_sesion} className="w-4 aspect-square" />
-            </div>
-            <div className="flex items-center w-[80%] ">
-              <span
-                className=" hover:text-morado hover:font-extrabold"
-                onClick={logout}
-              >
-                Cerrar sesión
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div className="flex flex-col my-16">
-        <ul className="pt-2 pb-4 space-y-1 "></ul>
-      </div>
-    </div>
+                    Cerrar sesión
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="flex flex-col my-16">
+            <ul className="pt-2 pb-4 space-y-1 "></ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
